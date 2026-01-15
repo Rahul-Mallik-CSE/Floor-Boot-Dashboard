@@ -8,6 +8,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CardDetails } from "@/types/AllTypes";
+import Image from "next/image";
+import { Button } from "../ui/button";
 
 interface AddCardModalProps {
   open: boolean;
@@ -63,37 +65,20 @@ const AddCardModal = ({ open, onOpenChange, onSuccess }: AddCardModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[550px] p-0 max-h-[90vh] overflow-y-auto bg-white">
+      <DialogContent className="sm:max-w-137.5 p-0 max-h-[90vh] overflow-y-auto bg-white">
         {/* Header */}
         <DialogHeader className="px-4 md:px-6 pt-4 md:pt-6 pb-4 border-b sticky top-0 bg-white z-10">
-          <button
-            onClick={handleCancel}
-            className="absolute left-4 top-4 md:top-6 text-gray-600 hover:text-gray-900"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <DialogTitle className="text-xl md:text-2xl font-semibold text-center">
+          <DialogTitle className="text-xl md:text-2xl font-semibold text-center text-black">
             Add a card
           </DialogTitle>
-          <p className="text-xs md:text-sm text-gray-600 text-center mt-1">
-            Just input your valid card number and information to ensure it's
-            your.
+          <p className="text-xs md:text-sm text-gray-600 text-center">
+            Just input your valid card number and information to ensure
+            it&apos;s your.
           </p>
         </DialogHeader>
 
         {/* Form Content */}
-        <div className="px-4 md:px-6 py-4 md:py-6 space-y-4 bg-white">
+        <div className="px-4 md:px-6 py-2 space-y-2 bg-white">
           {/* Card Number */}
           <div>
             <label
@@ -114,19 +99,23 @@ const AddCardModal = ({ open, onOpenChange, onSuccess }: AddCardModalProps) => {
                     handleInputChange("cardNumber", formatted);
                   }
                 }}
-                className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
+                className="w-full px-3 md:px-4 py-1 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
               />
               {/* Card Icons */}
               <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-                <img
+                <Image
                   src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg"
                   alt="Visa"
                   className="h-5 md:h-6"
+                  width={24}
+                  height={24}
                 />
-                <img
+                <Image
                   src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
                   alt="Mastercard"
                   className="h-5 md:h-6"
+                  width={24}
+                  height={24}
                 />
               </div>
             </div>
@@ -152,7 +141,7 @@ const AddCardModal = ({ open, onOpenChange, onSuccess }: AddCardModalProps) => {
                     handleInputChange("expiryDate", formatted);
                   }
                 }}
-                className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
+                className="w-full px-3 md:px-4 py-1 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
               />
             </div>
             <div>
@@ -171,7 +160,7 @@ const AddCardModal = ({ open, onOpenChange, onSuccess }: AddCardModalProps) => {
                 onChange={(e) =>
                   handleInputChange("cvc", e.target.value.replace(/\D/g, ""))
                 }
-                className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
+                className="w-full px-3 md:px-4 py-1 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
               />
             </div>
           </div>
@@ -190,7 +179,7 @@ const AddCardModal = ({ open, onOpenChange, onSuccess }: AddCardModalProps) => {
               placeholder="Enter the name"
               value={cardDetails.nameOnCard}
               onChange={(e) => handleInputChange("nameOnCard", e.target.value)}
-              className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
+              className="w-full px-3 md:px-4 py-1 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
             />
           </div>
 
@@ -208,7 +197,7 @@ const AddCardModal = ({ open, onOpenChange, onSuccess }: AddCardModalProps) => {
               placeholder="United State"
               value={cardDetails.country}
               onChange={(e) => handleInputChange("country", e.target.value)}
-              className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
+              className="w-full px-3 md:px-4 py-1 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
             />
           </div>
 
@@ -226,25 +215,25 @@ const AddCardModal = ({ open, onOpenChange, onSuccess }: AddCardModalProps) => {
               placeholder="477987"
               value={cardDetails.zipCode}
               onChange={(e) => handleInputChange("zipCode", e.target.value)}
-              className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
+              className="w-full px-3 md:px-4 py-1 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-sm md:text-base"
             />
           </div>
         </div>
 
         {/* Footer */}
         <div className="px-4 md:px-6 py-4 border-t flex justify-end gap-3 sticky bottom-0 bg-white">
-          <button
+          <Button
             onClick={handleCancel}
             className="px-4 md:px-6 py-2 text-sm md:text-base text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleContinue}
             className="px-4 md:px-6 py-2 text-sm md:text-base bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
           >
             Continue
-          </button>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

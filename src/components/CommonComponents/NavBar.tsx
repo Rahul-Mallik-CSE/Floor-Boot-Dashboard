@@ -30,7 +30,9 @@ const NavBar = () => {
         <div className="w-full flex justify-between items-center">
           <div className="flex-1 flex items-center gap-2">
             <SidebarTrigger />
-            <h1 className="text-xs md:text-sm text-gray-500">Dashboard /</h1>
+            <h1 className="text-xs md:text-sm text-gray-500">
+              Dashboard / <span></span>
+            </h1>
           </div>
 
           {/* right side of navbar */}

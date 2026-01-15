@@ -18,10 +18,10 @@ const WalletPage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-3 md:px-6 lg:px-8 py-4 md:py-6">
-        <h1 className="text-black text-xl md:text-2xl lg:text-3xl font-semibold mb-4 md:mb-6">
-          My wallet
+    <div className="w-full  ">
+      <div className="max-w-625 mx-auto px-2 md:px-4 py-6 ">
+        <h1 className="text-black text-2xl md:text-3xl font-semibold mb-2 md:mb-4">
+          My Wallet
         </h1>
 
         <div className="space-y-4 md:space-y-6">

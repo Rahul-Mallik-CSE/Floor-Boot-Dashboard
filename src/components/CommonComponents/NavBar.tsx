@@ -3,7 +3,6 @@
 "use client";
 
 import { Bell } from "lucide-react";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { SidebarTrigger } from "../ui/sidebar";
 const NavBar = () => {

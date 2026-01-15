@@ -14,26 +14,17 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarFooter,
-  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
-import {
-  IoDocumentTextOutline,
-  IoChatbubblesOutline,
-  IoGridOutline,
-} from "react-icons/io5";
+
 import { PiChatsCircle, PiWallet } from "react-icons/pi";
 import { TfiBag } from "react-icons/tfi";
-import { RiBriefcaseLine, RiMapPinLine } from "react-icons/ri";
 import { GoPlus, GoTag } from "react-icons/go";
-
-import { AiOutlineDollarCircle } from "react-icons/ai";
-import { FiSettings } from "react-icons/fi";
-import { BiSolidPackage, BiSupport, BiUserPlus } from "react-icons/bi";
-import { FaPlus, FaShieldAlt, FaTag, FaUserAlt } from "react-icons/fa";
+import { BiSolidPackage } from "react-icons/bi";
+import { FaUserAlt } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
 import LogoutModal from "./LogOutModal";
 import {
@@ -79,27 +70,6 @@ function DashboardSidebarContent() {
   }
 
   const isCollapsed = state === "collapsed";
-
-  const navItems = [
-    { href: "/", label: "Dashboard", icon: IoGridOutline },
-    { href: "/job-management", label: "Job Management", icon: RiBriefcaseLine },
-    {
-      href: "/preferred-operatives",
-      label: "Preferred Operatives",
-      icon: FaShieldAlt,
-    },
-    { href: "/contracts", label: "Contracts", icon: IoDocumentTextOutline },
-    { href: "/chat", label: "Chat", icon: IoChatbubblesOutline },
-    {
-      href: "/operatives-tracker",
-      label: "Operatives Tracker",
-      icon: RiMapPinLine,
-    },
-    { href: "/payroll", label: "Payroll", icon: AiOutlineDollarCircle },
-    { href: "/settings", label: "Settings", icon: FiSettings },
-    { href: "/support", label: "Support", icon: BiSupport },
-    { href: "/my-referral-user", label: "My Referral User", icon: BiUserPlus },
-  ];
 
   return (
     <>

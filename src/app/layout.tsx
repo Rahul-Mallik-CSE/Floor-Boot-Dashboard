@@ -50,7 +50,7 @@ export default function RootLayout({
         <SidebarProvider>
           <DashboardSidebar />
           <SidebarInset className="overflow-x-hidden">
-            <div className="min-h-screen w-full bg-[#F2F7FF]  ">
+            <div className="min-h-screen w-full bg-white  ">
               <NavBar />
               {children}
             </div>

@@ -25,12 +25,15 @@ import {
   IoChatbubblesOutline,
   IoGridOutline,
 } from "react-icons/io5";
+import { PiChatsCircle, PiWallet } from "react-icons/pi";
+import { TfiBag } from "react-icons/tfi";
 import { RiBriefcaseLine, RiMapPinLine } from "react-icons/ri";
+import { GoPlus, GoTag } from "react-icons/go";
 
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import { FiSettings } from "react-icons/fi";
-import { BiSupport, BiUserPlus } from "react-icons/bi";
-import { FaShieldAlt, FaUserAlt } from "react-icons/fa";
+import { BiSolidPackage, BiSupport, BiUserPlus } from "react-icons/bi";
+import { FaPlus, FaShieldAlt, FaTag, FaUserAlt } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
 import LogoutModal from "./LogOutModal";
 import {
@@ -100,10 +103,6 @@ function DashboardSidebarContent() {
 
   return (
     <>
-      {/* Mobile menu button */}
-      <div className="fixed top-4 left-4 z-40 md:hidden">
-        <SidebarTrigger />
-      </div>
       <Sidebar className="border-r-0  " collapsible="icon">
         <SidebarContent className="bg-white">
           <div
@@ -114,38 +113,79 @@ function DashboardSidebarContent() {
             <div className="flex items-center gap-3">
               <Link href="/">
                 <Image
-                  src="/logo.png"
+                  src="/DMS-Logo.png"
                   alt="Logo"
-                  width={48}
-                  height={48}
+                  width={70}
+                  height={60}
                   className="rounded-xl object-contain"
                 />
               </Link>
-            </div>
-
-            {/* Collapse button for desktop */}
-            <div className={`absolute top-1 hidden md:block right-0`}>
-              <SidebarTrigger />
             </div>
           </div>
 
           <SidebarMenu
             className={
-              isCollapsed ? "px-2 space-y-2 items-center" : "md:px-6 space-y-3"
+              isCollapsed ? "px-2 space-y-1 items-center" : "md:px-6 space-y-1"
             }
           >
-            {navItems.map((item) => (
-              <NavItem
-                key={item.href}
-                href={item.href}
-                icon={item.icon}
-                label={item.label}
-                active={
-                  pathname === item.href || pathname.startsWith(item.href + "/")
-                }
-                collapsed={isCollapsed}
-              />
-            ))}
+            <p className="text-gray-500 text-sm">DASHBOARD</p>
+            <NavItem
+              href="/"
+              icon={BiSolidPackage}
+              label={"Orders"}
+              active={pathname === "/" || pathname.startsWith("/" + "/")}
+              collapsed={isCollapsed}
+            />
+            <NavItem
+              href="/catalogue"
+              icon={GoTag}
+              label={"Catalogue"}
+              active={
+                pathname === "/catalogue" ||
+                pathname.startsWith("/catalogue" + "/")
+              }
+              collapsed={isCollapsed}
+            />
+            <NavItem
+              href="/add-new-item"
+              icon={GoPlus}
+              label={"Add New Item"}
+              active={
+                pathname === "/add-new-item" ||
+                pathname.startsWith("/add-new-item" + "/")
+              }
+              collapsed={isCollapsed}
+            />
+            <p className="text-gray-500 text-sm">Account Management</p>
+            <NavItem
+              href="/my-business"
+              icon={TfiBag}
+              label={"My Business"}
+              active={
+                pathname === "/my-business" ||
+                pathname.startsWith("/my-business" + "/")
+              }
+              collapsed={isCollapsed}
+            />
+            <NavItem
+              href="/wallet"
+              icon={PiWallet}
+              label={"Wallet"}
+              active={
+                pathname === "/wallet" || pathname.startsWith("/wallet" + "/")
+              }
+              collapsed={isCollapsed}
+            />
+            <NavItem
+              href="/feedback"
+              icon={PiChatsCircle}
+              label={"Feedback"}
+              active={
+                pathname === "/feedback" ||
+                pathname.startsWith("/feedback" + "/")
+              }
+              collapsed={isCollapsed}
+            />
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter className={`bg-white  ${isCollapsed ? "px-2" : "px-6"}`}>
@@ -247,8 +287,8 @@ function NavItem({
         asChild
         className={cn(
           active
-            ? "bg-orange-500 text-white hover:text-white hover:bg-orange-500 focus:bg-orange-600 font-medium"
-            : "bg-transparent text-gray-700 hover:bg-orange-50 hover:text-orange-500 font-medium"
+            ? "bg-gray-200 text-black hover:text-black hover:bg-gray-200 focus:bg-gray-200 font-medium"
+            : "bg-transparent text-gray-700 hover:bg-gray-50 hover:text-black font-medium"
         )}
       >
         <Link

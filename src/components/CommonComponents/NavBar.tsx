@@ -5,6 +5,7 @@
 import { Bell } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { SidebarTrigger } from "../ui/sidebar";
 const NavBar = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -25,12 +26,11 @@ const NavBar = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-40 w-full h-16 bg-white flex items-center px-4 md:px-8 shadow-md border border-transparent">
+      <div className="sticky top-0 z-40 w-full h-16 bg-white flex items-center px-2 md:px-4 shadow-md border border-transparent">
         <div className="w-full flex justify-between items-center">
-          <div className="flex-1">
-            <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">
-              Welcome Back, <span className="text-orange-500">User</span>
-            </h1>
+          <div className="flex-1 flex items-center gap-2">
+            <SidebarTrigger />
+            <h1 className="text-xs md:text-sm text-gray-500">Dashboard /</h1>
           </div>
 
           {/* right side of navbar */}
@@ -41,23 +41,6 @@ const NavBar = () => {
               aria-label="Notifications"
             >
               <Bell className="h-6 w-6 text-gray-700" />
-            </button>
-
-            <button
-              className="flex items-center gap-3 bg-transparent rounded-md p-1 hover:bg-gray-50 transition-colors"
-              aria-label="Profile"
-            >
-              <Image
-                src="/logo.png"
-                alt="profile"
-                width={36}
-                height={36}
-                className="rounded-full object-cover"
-                unoptimized
-              />
-              <span className="text-base md:text-lg text-gray-800 font-medium truncate max-w-37.5">
-                User
-              </span>
             </button>
           </div>
         </div>

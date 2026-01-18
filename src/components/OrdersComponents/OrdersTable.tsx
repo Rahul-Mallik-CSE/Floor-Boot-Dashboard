@@ -3,6 +3,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import CustomTable from "@/components/CommonComponents/CustomTable";
 import { Order, TableColumn } from "@/types/AllTypes";
 import { Eye } from "lucide-react";
@@ -16,6 +17,8 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
   data,
   onViewDetails,
 }) => {
+  const router = useRouter();
+
   const columns: TableColumn[] = [
     { key: "purchaseOrder", label: "Purchase orders", width: "150px" },
     { key: "productId", label: "Product ID", width: "150px" },
@@ -102,7 +105,12 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
       case "action":
         return (
           <button
-            onClick={() => onViewDetails?.(item)}
+            onClick={() => {
+              if (onViewDetails) {
+                onViewDetails(item);
+              }
+              router.push(`/orders/${item.id}`);
+            }}
             className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
           >
             <Eye className="w-4 h-4" />

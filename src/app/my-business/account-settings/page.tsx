@@ -2,6 +2,7 @@
 
 import React from "react";
 import { GeneralSettingsSection } from "@/components/MyBusinessComponents/GeneralSettingsSection";
+import { SecuritySettingsSection } from "@/components/MyBusinessComponents/SecuritySettingsSection";
 
 const AccountSettingsPage = () => {
   return (
@@ -14,9 +15,9 @@ const AccountSettingsPage = () => {
         {/* General section */}
         <GeneralSettingsSection />
 
-        {/* password change section could go here */}
-        <div>
-
+        {/* Security Settings section */}
+        <div className="mt-6">
+          <SecuritySettingsSection />
         </div>
       </div>
     </div>

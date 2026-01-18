@@ -39,3 +39,15 @@ export interface CardDetails {
   country: string;
   zipCode: string;
 }
+
+export interface CatalogueProduct {
+  id: string;
+  slNo: string;
+  itemName: string;
+  productId: string;
+  category: string;
+  subCategory: string;
+  price: number;
+  inStockQty: number;
+  imageUrl?: string;
+}

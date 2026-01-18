@@ -51,3 +51,20 @@ export interface CatalogueProduct {
   inStockQty: number;
   imageUrl?: string;
 }
+
+export type OrderStatus = "shipped" | "unshipped" | "cancelled";
+
+export interface Order {
+  id: string;
+  purchaseOrder: string;
+  productId: string;
+  orderDate: string;
+  orderTotal: number;
+  customer: string;
+  shipMethod: string;
+  carrier: string;
+  trackingNo: string;
+  item: string;
+  qty: number;
+  status: OrderStatus;
+}

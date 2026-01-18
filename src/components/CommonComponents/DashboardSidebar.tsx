@@ -98,7 +98,7 @@ function DashboardSidebarContent() {
               isCollapsed ? "px-2 space-y-1 items-center" : "md:px-6 space-y-1"
             }
           >
-            <p className="text-gray-500 text-sm">DASHBOARD</p>
+            {!isCollapsed && <p className="text-gray-500 text-sm">DASHBOARD</p>}
             <NavItem
               href="/"
               icon={BiSolidPackage}
@@ -126,7 +126,9 @@ function DashboardSidebarContent() {
               }
               collapsed={isCollapsed}
             />
-            <p className="text-gray-500 text-sm">Account Management</p>
+            {!isCollapsed && (
+              <p className="text-gray-500 text-sm">Account Management</p>
+            )}
             <NavItem
               href="/my-business"
               icon={TfiBag}
@@ -158,71 +160,36 @@ function DashboardSidebarContent() {
             />
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter className={`bg-white  ${isCollapsed ? "px-2" : "px-6"}`}>
-          <div className={`${isCollapsed ? "w-full" : "w-full"} py-4`}>
-            {!isCollapsed ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="bg-blue-50 rounded-lg p-1 flex items-center gap-4 cursor-pointer hover:bg-blue-100 transition-colors">
-                    <Image
-                      src="/logo.png"
-                      alt="profile"
-                      width={34}
-                      height={34}
-                      className="rounded-full object-cover"
-                      unoptimized
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-semibold truncate max-w-30">
-                            User
-                          </p>
-                          <p className="text-xs text-gray-400">General</p>
-                        </div>
-                        <div className="text-gray-500">▾</div>
-                      </div>
-                    </div>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem
-                    onClick={() => setIsLogoutModalOpen(true)}
-                    className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
-                  >
-                    <IoLogOutOutline className="mr-2 h-4 w-4" />
-                    <span>Log Out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="flex items-center justify-center py-2 cursor-pointer">
-                    <div className="rounded-full p-1 bg-blue-100 hover:bg-blue-200 transition-colors">
-                      <FaUserAlt className="h-4 w-4" />
-                    </div>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem
-                    onClick={() => setIsLogoutModalOpen(true)}
-                    className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
-                  >
-                    <IoLogOutOutline className="mr-2 h-4 w-4" />
-                    <span>Log Out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-
-            <div className="mt-4">
-              <button className="w-full bg-white border border-blue-100 rounded-lg py-1 flex items-center justify-center gap-3 text-blue-800 font-medium">
-                <span className="text-xl">👑</span>
-                {!isCollapsed && <span>Upgrade Plan</span>}
+        <SidebarFooter
+          className={`w-full bg-white border-t border-gray-200 ${
+            isCollapsed ? "px-2" : "px-3"
+          }`}
+        >
+          {/* User Profile Section */}
+          {!isCollapsed && (
+            <div className="py-3 space-y-3">
+              {/* Log Out Button */}
+              <button
+                onClick={() => setIsLogoutModalOpen(true)}
+                className="w-full cursor-pointer flex items-center justify-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <IoLogOutOutline className="w-5 h-5" />
+                <span>Log Out</span>
               </button>
             </div>
-          </div>
+          )}
+
+          {/* Collapsed State */}
+          {isCollapsed && (
+            <div className="py-3 flex flex-col items-center gap-2">
+              <button
+                onClick={() => setIsLogoutModalOpen(true)}
+                className="p-2 cursor-pointer hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <IoLogOutOutline className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
+          )}
         </SidebarFooter>
       </Sidebar>
       <LogoutModal
@@ -258,7 +225,7 @@ function NavItem({
         className={cn(
           active
             ? "bg-gray-200 text-black hover:text-black hover:bg-gray-200 focus:bg-gray-200 font-medium"
-            : "bg-transparent text-gray-700 hover:bg-gray-50 hover:text-black font-medium"
+            : "bg-transparent text-gray-700 hover:bg-gray-50 hover:text-black font-medium",
         )}
       >
         <Link
@@ -266,7 +233,7 @@ function NavItem({
           className={cn(
             collapsed
               ? "flex items-center justify-center px-2 py-3 transition-colors rounded-full w-12 h-12 mx-auto"
-              : "flex items-center gap-3 px-4 py-3 transition-colors rounded-md"
+              : "flex items-center gap-3 px-4 py-3 transition-colors rounded-md",
           )}
         >
           <Icon size={collapsed ? 20 : 18} />

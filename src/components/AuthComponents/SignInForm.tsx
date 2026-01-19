@@ -6,8 +6,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 export const SignInForm: React.FC = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +19,7 @@ export const SignInForm: React.FC = () => {
     e.preventDefault();
     // Handle sign in logic
     console.log("Sign in:", { email, password, rememberMe });
+    router.push("/");
   };
 
   return (

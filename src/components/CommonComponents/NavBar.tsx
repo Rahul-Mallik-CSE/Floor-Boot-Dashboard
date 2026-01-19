@@ -11,10 +11,10 @@ const NavBar = () => {
   if (
     pathname === "/sign-in" ||
     pathname === "/sign-up" ||
-    pathname === "/forget-pass" ||
+    pathname === "/forgot-pass" ||
     pathname === "/verify-method" ||
     pathname === "/verify-otp" ||
-    pathname === "/reset-pass" ||
+    pathname === "/set-new-pass" ||
     pathname === "/account-setup"
   ) {
     return null;

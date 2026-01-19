@@ -5,7 +5,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import { FaFacebookF, FaGoogle, FaApple } from "react-icons/fa";
 
 export const SignInForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -17,10 +16,6 @@ export const SignInForm: React.FC = () => {
     e.preventDefault();
     // Handle sign in logic
     console.log("Sign in:", { email, password, rememberMe });
-  };
-
-  const handleSocialLogin = (provider: string) => {
-    console.log("Social login:", provider);
   };
 
   return (
@@ -100,7 +95,7 @@ export const SignInForm: React.FC = () => {
             <span className="text-sm text-gray-700">Remember me</span>
           </label>
           <Link
-            href="/forgot-password"
+            href="/forgot-pass"
             className="text-sm text-teal-600 hover:text-teal-700 font-medium"
           >
             Forgot Password?
@@ -115,43 +110,6 @@ export const SignInForm: React.FC = () => {
           Sign In
         </button>
       </form>
-
-      {/* Social Login */}
-      <div className="mt-6">
-        <div className="flex items-center justify-center gap-4">
-          <button
-            onClick={() => handleSocialLogin("facebook")}
-            className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
-          >
-            <FaFacebookF className="w-5 h-5 text-blue-600" />
-          </button>
-          <button
-            onClick={() => handleSocialLogin("google")}
-            className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
-          >
-            <FaGoogle className="w-5 h-5 text-red-500" />
-          </button>
-          <button
-            onClick={() => handleSocialLogin("apple")}
-            className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
-          >
-            <FaApple className="w-5 h-5 text-gray-900" />
-          </button>
-        </div>
-      </div>
-
-      {/* Sign Up Link */}
-      <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600">
-          Don't have account?{" "}
-          <Link
-            href="/sign-up"
-            className="text-teal-600 hover:text-teal-700 font-semibold"
-          >
-            Sign up
-          </Link>
-        </p>
-      </div>
     </div>
   );
 };

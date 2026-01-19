@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 const ForgotPassForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -63,12 +64,12 @@ const ForgotPassForm: React.FC = () => {
         </div>
 
         {/* Send Verification Code Button */}
-        <button
+        <Button
           type="submit"
-          className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
+          className="w-full bg-teal-600 text-white py-3 h-10 md:h-11 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
         >
           Send Verification Code
-        </button>
+        </Button>
 
         {/* Back to Sign In */}
         <div className="text-center pt-2">

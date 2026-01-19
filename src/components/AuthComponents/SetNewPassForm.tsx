@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, ArrowLeft, Check } from "lucide-react";
+import { Button } from "../ui/button";
 
 const SetNewPassForm: React.FC = () => {
   const [password, setPassword] = useState("");
@@ -205,12 +206,12 @@ const SetNewPassForm: React.FC = () => {
         </div>
 
         {/* Save New Password Button */}
-        <button
+        <Button
           type="submit"
-          className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
+          className="w-full bg-teal-600 text-white py-3 h-10 md:h-11 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
         >
           Save New Password
-        </button>
+        </Button>
 
         {/* Back to Sign In */}
         <div className="text-center pt-2">

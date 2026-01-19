@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
+import { Button } from "../ui/button";
 
 const VerifyOtpForm: React.FC = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
@@ -127,12 +128,12 @@ const VerifyOtpForm: React.FC = () => {
         </div>
 
         {/* Verify Button */}
-        <button
+        <Button
           type="submit"
-          className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
+          className="w-full bg-teal-600 text-white py-3 h-10 md:h-11 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
         >
           Verify Code & Continue
-        </button>
+        </Button>
 
         {/* Resend Code */}
         <div className="text-center">

@@ -5,6 +5,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import { Button } from "../ui/button";
 
 export const SignInForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -103,12 +104,12 @@ export const SignInForm: React.FC = () => {
         </div>
 
         {/* Sign In Button */}
-        <button
+        <Button
           type="submit"
-          className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
+          className="w-full bg-teal-600 text-white py-4 h-10 md:h-11 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
         >
           Sign In
-        </button>
+        </Button>
       </form>
     </div>
   );

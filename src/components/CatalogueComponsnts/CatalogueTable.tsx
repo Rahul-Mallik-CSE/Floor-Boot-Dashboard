@@ -72,7 +72,7 @@ export const CatalogueTable: React.FC<CatalogueTableProps> = ({
         return (
           <div className="flex items-center gap-2">
             <span className="text-gray-700 font-medium">
-              ${item.price.toFixed(2)}
+              £{item.price.toFixed(2)}
             </span>
             <button className="p-1 hover:bg-gray-100 rounded transition-colors">
               <Pencil className="w-3.5 h-3.5 text-gray-400" />

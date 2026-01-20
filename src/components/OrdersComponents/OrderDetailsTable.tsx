@@ -68,7 +68,7 @@ export const OrderDetailsTable: React.FC<OrderDetailsTableProps> = ({
               {order.item}
             </TableCell>
             <TableCell className="text-gray-900 font-medium text-sm">
-              ${order.orderTotal.toFixed(2)}
+              £{order.orderTotal.toFixed(2)}
             </TableCell>
             <TableCell className="text-gray-600 text-sm">N/A</TableCell>
             <TableCell className="text-gray-700 text-sm">{order.qty}</TableCell>

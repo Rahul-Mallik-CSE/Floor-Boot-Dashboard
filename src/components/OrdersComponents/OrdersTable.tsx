@@ -63,7 +63,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
       case "orderTotal":
         return (
           <span className="text-gray-900 font-medium text-sm">
-            ${item.orderTotal.toFixed(2)}
+            £{item.orderTotal.toFixed(2)}
           </span>
         );
 

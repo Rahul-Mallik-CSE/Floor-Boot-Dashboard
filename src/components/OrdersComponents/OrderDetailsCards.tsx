@@ -48,22 +48,22 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
           <div className="flex justify-between">
             <span className="text-gray-600">Subtotal</span>
             <span className="text-gray-900">
-              ${order.orderTotal.toFixed(2)}
+              £{order.orderTotal.toFixed(2)}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Tax</span>
-            <span className="text-gray-900">$1.45</span>
+            <span className="text-gray-900">£1.45</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Shipping</span>
-            <span className="text-gray-900">$0</span>
+            <span className="text-gray-900">£0</span>
           </div>
           <div className="border-t border-gray-300 pt-2 mt-2">
             <div className="flex justify-between font-semibold">
               <span className="text-gray-900">Total</span>
               <span className="text-gray-900">
-                ${(order.orderTotal + 1.45).toFixed(2)}
+                £{(order.orderTotal + 1.45).toFixed(2)}
               </span>
             </div>
           </div>

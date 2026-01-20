@@ -104,7 +104,9 @@ const VerifyOtpForm: React.FC = () => {
           {otp.map((digit, index) => (
             <input
               key={index}
-              ref={(el) => (inputRefs.current[index] = el)}
+              ref={(el) => {
+                inputRefs.current[index] = el;
+              }}
               type="text"
               maxLength={1}
               value={digit}

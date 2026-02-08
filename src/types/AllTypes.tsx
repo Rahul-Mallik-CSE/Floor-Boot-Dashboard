@@ -15,6 +15,22 @@ export interface Feedback {
   avatar?: string;
 }
 
+export interface ApiFeedback {
+  id: number;
+  user: {
+    full_name: string;
+    image: string;
+  };
+  customer_feedback: string;
+  updated_at: string;
+}
+
+export interface FeedbackResponse {
+  success: boolean;
+  message: string;
+  feedbacks: ApiFeedback[];
+}
+
 export interface LinkedAccount {
   id: string;
   provider: string;
@@ -74,4 +90,22 @@ export interface WalletBalanceResponse {
   total_balance: number;
   pending_amount: number;
   currency: string;
+}
+
+export interface FeedbackUser {
+  full_name: string;
+  image: string;
+}
+
+export interface FeedbackItem {
+  id: number;
+  user: FeedbackUser;
+  custormer_feedback: string;
+  updated_at: string;
+}
+
+export interface FeedbackResponse {
+  success: boolean;
+  message: string;
+  feedbacks: FeedbackItem[];
 }

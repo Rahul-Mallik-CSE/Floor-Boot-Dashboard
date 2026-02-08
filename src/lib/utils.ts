@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getFullImageUrl = (
-  imagePath: string | null | undefined
+  imagePath: string | null | undefined,
 ): string => {
   if (!imagePath) return "";
 
@@ -20,7 +20,7 @@ export const getFullImageUrl = (
   // If it starts with /uploads, prepend the backend URL
   if (imagePath.startsWith("/media")) {
     return `${
-      process.env.NEXT_PUBLIC_API_BASE_URL || "http://10.10.12.15:8001"
+      process.env.NEXT_PUBLIC_API_MEDIA_URL || "http://10.10.12.15:8001"
     }${imagePath}`;
   }
 

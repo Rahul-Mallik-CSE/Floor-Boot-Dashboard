@@ -1,11 +1,11 @@
 /** @format */
 
 import React from "react";
-import { Feedback } from "@/types/AllTypes";
+import { FeedbackItem } from "@/types/AllTypes";
 import FeedbackItem from "./FeedbackItem";
 
 interface FeedbackListProps {
-  feedbacks: Feedback[];
+  feedbacks: FeedbackItem[];
 }
 
 const FeedbackList = ({ feedbacks }: FeedbackListProps) => {

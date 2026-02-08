@@ -16,13 +16,14 @@ const FeedbackItem = ({ feedback }: FeedbackItemProps) => {
     <div className="flex items-start gap-3 md:gap-4 py-4 md:py-5 border-b border-gray-200 last:border-b-0">
       {/* Avatar */}
       <div className="shrink-0">
-        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden relative">
           {avatarUrl ? (
             <Image
               src={avatarUrl}
               alt={feedback.user.full_name}
               fill
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-full"
+              unoptimized
             />
           ) : (
             <span className="text-white text-sm md:text-base font-medium">
@@ -49,6 +50,7 @@ const FeedbackItem = ({ feedback }: FeedbackItemProps) => {
             <span className="text-xs text-gray-500">
               {new Date(feedback.updated_at).toLocaleDateString()}
             </span>
+            <h1 className="font-semibold">Order ID: {feedback.id}</h1>
           </div>
         </div>
       </div>

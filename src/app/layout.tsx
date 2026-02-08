@@ -8,6 +8,7 @@ import { Bounce, ToastContainer } from "react-toastify";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import DashboardSidebar from "@/components/CommonComponents/DashboardSidebar";
 import NavBar from "@/components/CommonComponents/NavBar";
+import Providers from "@/redux/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,28 +35,30 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Bounce}
-        />
-        <SidebarProvider>
-          <DashboardSidebar />
-          <SidebarInset className="overflow-x-hidden">
-            <div className="min-h-screen w-full bg-white  ">
-              <NavBar />
-              {children}
-            </div>
-          </SidebarInset>
-        </SidebarProvider>
+        <Providers>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Bounce}
+          />
+          <SidebarProvider>
+            <DashboardSidebar />
+            <SidebarInset className="overflow-x-hidden">
+              <div className="min-h-screen w-full bg-white  ">
+                <NavBar />
+                {children}
+              </div>
+            </SidebarInset>
+          </SidebarProvider>
+        </Providers>
       </body>
     </html>
   );

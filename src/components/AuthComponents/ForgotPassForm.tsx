@@ -7,16 +7,37 @@ import Link from "next/link";
 import { ArrowLeft, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
+import { useForgotPasswordMutation } from "@/redux/freatures/authAPI";
 
 const ForgotPassForm: React.FC = () => {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle verification code logic
-    console.log("Send verification code to:", email);
-    router.push("/verify-otp");
+    setError("");
+
+    try {
+      const response = await forgotPassword({ email }).unwrap();
+
+      if (response.success) {
+        // Store email in localStorage for use in verify OTP page
+        localStorage.setItem("resetEmail", email);
+
+        // Redirect to verify OTP page
+        router.push("/verify-otp");
+      }
+    } catch (err: unknown) {
+      console.error("Forgot password error:", err);
+      const error = err as { data?: { message?: string } };
+      setError(
+        error.data?.message ||
+          "Failed to send verification code. Please try again.",
+      );
+    }
   };
 
   return (
@@ -34,6 +55,13 @@ const ForgotPassForm: React.FC = () => {
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
         {/* Email/Phone */}
         <div>
           <label
@@ -50,6 +78,7 @@ const ForgotPassForm: React.FC = () => {
             placeholder="Name@example.com"
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all text-sm"
             required
+            disabled={isLoading}
           />
         </div>
 
@@ -66,9 +95,10 @@ const ForgotPassForm: React.FC = () => {
         {/* Send Verification Code Button */}
         <Button
           type="submit"
-          className="w-full bg-teal-600 text-white py-3 h-10 md:h-11 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
+          className="w-full bg-teal-600 text-white py-3 h-10 md:h-11 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isLoading}
         >
-          Send Verification Code
+          {isLoading ? "Sending..." : "Send Verification Code"}
         </Button>
 
         {/* Back to Sign In */}

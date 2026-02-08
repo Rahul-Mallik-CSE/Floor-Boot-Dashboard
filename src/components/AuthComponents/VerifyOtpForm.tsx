@@ -7,13 +7,35 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "../ui/button";
+import {
+  useVerifyOtpMutation,
+  useForgotPasswordMutation,
+} from "@/redux/freatures/authAPI";
+import { saveTokens } from "@/services/authService";
 
 const VerifyOtpForm: React.FC = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(299); // 4:59 in seconds
+  const [error, setError] = useState("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const router = useRouter();
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+  const [forgotPassword] = useForgotPasswordMutation();
+
+  // Get email from localStorage - stored as state initializer to avoid re-renders
+  const [email] = useState(() => {
+    const storedEmail = localStorage.getItem("resetEmail");
+    return storedEmail || "";
+  });
+
+  // Redirect if no email is found
+  useEffect(() => {
+    if (!email) {
+      router.push("/forgot-pass");
+    }
+  }, [email, router]);
+
   // Timer countdown
   useEffect(() => {
     const interval = setInterval(() => {
@@ -68,18 +90,62 @@ const VerifyOtpForm: React.FC = () => {
     setOtp(newOtp);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle OTP verification logic
-    console.log("Verify OTP:", otp.join(""));
-    router.push("/set-new-pass");
+    setError("");
+
+    const otpValue = otp.join("");
+
+    if (otpValue.length !== 6) {
+      setError("Please enter the complete 6-digit code");
+      return;
+    }
+
+    try {
+      const response = await verifyOtp({
+        email,
+        otp: otpValue,
+      }).unwrap();
+
+      if (response.success) {
+        // Save access token to localStorage for reset password request
+        localStorage.setItem("accessToken", response.access);
+
+        // Save token to cookies
+        await saveTokens(response.access, false);
+
+        // Redirect to reset password page
+        router.push("/set-new-pass");
+      }
+    } catch (err: unknown) {
+      console.error("Verify OTP error:", err);
+      const error = err as { data?: { message?: string } };
+      setError(
+        error.data?.message || "Invalid verification code. Please try again.",
+      );
+    }
   };
 
-  const handleResendCode = () => {
-    // Handle resend code logic
-    console.log("Resend verification code");
-    setTimer(299); // Reset timer
-    setOtp(["", "", "", "", "", ""]); // Clear OTP
+  const handleResendCode = async () => {
+    setError("");
+
+    try {
+      await forgotPassword({ email }).unwrap();
+      setTimer(299); // Reset timer
+      setOtp(["", "", "", "", "", ""]); // Clear OTP
+    } catch (err: unknown) {
+      console.error("Resend code error:", err);
+      setError("Failed to resend code. Please try again.");
+    }
+  };
+
+  // Mask email for display
+  const maskEmail = (email: string) => {
+    if (!email) return "";
+    const [username, domain] = email.split("@");
+    if (!username || !domain) return email;
+    const maskedUsername = username.substring(0, 3) + "...";
+    return `${maskedUsername}@${domain}`;
   };
 
   return (
@@ -92,13 +158,18 @@ const VerifyOtpForm: React.FC = () => {
         <p className="text-sm text-gray-500 mb-4">
           We&apos;ve sent 6-digit verification code to your email address.
         </p>
-        <p className="text-sm text-teal-600 font-medium">
-          xyz...............@gamil.com
-        </p>
+        <p className="text-sm text-teal-600 font-medium">{maskEmail(email)}</p>
       </div>
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
         {/* OTP Input Boxes */}
         <div className="flex justify-center gap-2 md:gap-3">
           {otp.map((digit, index) => (
@@ -113,8 +184,9 @@ const VerifyOtpForm: React.FC = () => {
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
               onPaste={handlePaste}
-              className="w-12 h-12 md:w-14 md:h-14 text-center text-2xl font-bold border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
+              className="w-12 h-12 md:w-14 md:h-14 text-center text-2xl font-bold border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all disabled:opacity-50"
               autoFocus={index === 0}
+              disabled={isLoading}
             />
           ))}
         </div>
@@ -132,9 +204,10 @@ const VerifyOtpForm: React.FC = () => {
         {/* Verify Button */}
         <Button
           type="submit"
-          className="w-full bg-teal-600 text-white py-3 h-10 md:h-11 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm"
+          className="w-full bg-teal-600 text-white py-3 h-10 md:h-11 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isLoading}
         >
-          Verify Code & Continue
+          {isLoading ? "Verifying..." : "Verify Code & Continue"}
         </Button>
 
         {/* Resend Code */}
@@ -144,7 +217,8 @@ const VerifyOtpForm: React.FC = () => {
             <button
               type="button"
               onClick={handleResendCode}
-              className="text-teal-600 hover:text-teal-700 font-medium"
+              className="text-teal-600 hover:text-teal-700 font-medium disabled:opacity-50"
+              disabled={isLoading}
             >
               Resent Code
             </button>

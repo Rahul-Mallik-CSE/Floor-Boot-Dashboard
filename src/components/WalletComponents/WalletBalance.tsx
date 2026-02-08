@@ -5,13 +5,18 @@ import React from "react";
 interface WalletBalanceProps {
   totalBalance: number;
   pendingAmount: number;
+  currency?: string;
 }
 
-const WalletBalance = ({ totalBalance, pendingAmount }: WalletBalanceProps) => {
+const WalletBalance = ({
+  totalBalance,
+  pendingAmount,
+  currency = "GBP",
+}: WalletBalanceProps) => {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-GB", {
       style: "currency",
-      currency: "GBP",
+      currency: currency.toUpperCase(),
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);

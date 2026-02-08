@@ -219,7 +219,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                 <td className="px-4 py-4 whitespace-nowrap">
                   <button
                     onClick={() => router.push(`/orders/${order.id}`)}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
+                    className="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
                   >
                     <Eye className="w-4 h-4" />
                     Details

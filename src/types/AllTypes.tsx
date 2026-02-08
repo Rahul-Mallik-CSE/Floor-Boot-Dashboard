@@ -68,3 +68,10 @@ export interface Order {
   qty: number;
   status: OrderStatus;
 }
+
+export interface WalletBalanceResponse {
+  success: boolean;
+  total_balance: number;
+  pending_amount: number;
+  currency: string;
+}

@@ -33,6 +33,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { logout } from "@/services/authService";
 
 // import { logout } from "@/service/authService";
 export default function DashboardSidebar() {
@@ -49,9 +50,9 @@ function DashboardSidebarContent() {
   const handleLogout = async () => {
     // Perform logout actions here (clear tokens, etc.)
     // Redirect to login page
-    // await logout();
-    // localStorage.removeItem("accessToken");
-    // await logout();
+    await logout();
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
     router.push("/sign-in");
 
     setIsLogoutModalOpen(false);

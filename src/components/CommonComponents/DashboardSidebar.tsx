@@ -81,17 +81,16 @@ function DashboardSidebarContent() {
               isCollapsed ? "px-2" : "gap-2"
             }`}
           >
-            <div className="flex items-center gap-3">
-              <Link href="/">
-                <Image
-                  src="/DMS-logo.png"
-                  alt="Logo"
-                  width={70}
-                  height={60}
-                  className="rounded-xl object-contain"
-                />
-              </Link>
-            </div>
+            <Link href="/">
+              <Image
+                src="/DMS-logo.png"
+                alt="Logo"
+                width={70}
+                height={60}
+                className="rounded-xl object-contain"
+                unoptimized={true}
+              />
+            </Link>
           </div>
 
           <SidebarMenu

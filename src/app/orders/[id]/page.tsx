@@ -43,7 +43,7 @@ export default function OrderDetailsPage() {
       <div className="max-w-625 mx-auto px-4 md:px-6 py-6 md:py-8">
         {/* Back Button */}
         <button
-          onClick={() => router.push("/")}
+          onClick={() => router.back()}
           className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />

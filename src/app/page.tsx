@@ -2,55 +2,65 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { OrderTabs } from "@/components/OrdersComponents/OrderTabs";
 import { OrdersTable } from "@/components/OrdersComponents/OrdersTable";
 import { OrderSearchBar } from "@/components/OrdersComponents/OrderSearchBar";
-import { ordersData } from "@/data/AllData";
-import { Order, OrderStatus } from "@/types/AllTypes";
+import { useGetOrdersQuery } from "@/redux/freatures/ordersAPI";
+import type { OrdersQueryParams } from "@/types/orders";
+
+type TabType = "all" | "shipped" | "unshipped" | "cancelled" | "delivered";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"all" | OrderStatus>("all");
+  const [activeTab, setActiveTab] = useState<TabType>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  // Filter orders based on active tab
-  const getFilteredOrders = () => {
-    let filtered = ordersData;
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      setCurrentPage(1); // Reset to first page on search
+    }, 500);
 
-    // Filter by tab
-    if (activeTab !== "all") {
-      filtered = filtered.filter((order) => order.status === activeTab);
-    }
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
-    // Filter by search query
-    if (searchQuery) {
-      filtered = filtered.filter(
-        (order) =>
-          order.purchaseOrder
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          order.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          order.trackingNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          order.item.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-    }
-
-    return filtered;
+  // Build query parameters
+  const queryParams: OrdersQueryParams = {
+    page: currentPage,
   };
 
-  const filteredOrders = getFilteredOrders();
+  if (activeTab !== "all") {
+    queryParams.query = activeTab;
+  }
 
-  // Calculate counts for each tab
+  if (debouncedSearch) {
+    queryParams.search = debouncedSearch;
+  }
+
+  // Fetch orders
+  const { data, isLoading, isFetching, error } = useGetOrdersQuery(queryParams);
+
+  // Calculate counts for tabs
   const counts = {
-    all: ordersData.length,
-    shipped: ordersData.filter((o) => o.status === "shipped").length,
-    unshipped: ordersData.filter((o) => o.status === "unshipped").length,
-    cancelled: ordersData.filter((o) => o.status === "cancelled").length,
+    all: data?.meta.total_items || 0,
+    shipped: 0, // These would need separate API calls or be provided by backend
+    unshipped: 0,
+    cancelled: 0,
+    delivered: 0,
   };
 
-  const handleViewDetails = (order: Order) => {
-    console.log("View details for order:", order);
-    // Navigate to order details page or show modal
+  // Handle tab change
+  const handleTabChange = (tab: TabType) => {
+    setActiveTab(tab);
+    setCurrentPage(1); // Reset to first page on tab change
+  };
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -73,12 +83,24 @@ export default function Home() {
         {/* Tabs */}
         <OrderTabs
           activeTab={activeTab}
-          onTabChange={setActiveTab}
+          onTabChange={handleTabChange}
           counts={counts}
         />
 
         {/* Orders Table */}
-        <OrdersTable data={filteredOrders} onViewDetails={handleViewDetails} />
+        {error ? (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+            Failed to load orders. Please try again.
+          </div>
+        ) : (
+          <OrdersTable
+            data={data?.data.orders || []}
+            isLoading={isLoading || isFetching}
+            meta={data?.meta}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
     </div>
   );

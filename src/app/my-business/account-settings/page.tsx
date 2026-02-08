@@ -5,9 +5,36 @@ import { GeneralSettingsSection } from "@/components/MyBusinessComponents/Genera
 import { SecuritySettingsSection } from "@/components/MyBusinessComponents/SecuritySettingsSection";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useGetProfileQuery } from "@/redux/freatures/myBusinessAPI";
 
 const AccountSettingsPage = () => {
   const router = useRouter();
+  const { data, isLoading, error } = useGetProfileQuery();
+
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-gray-50">
+        <div className="max-w-625 mx-auto px-4 md:px-6 py-6 md:py-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded mb-6"></div>
+            <div className="h-64 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full min-h-screen bg-gray-50">
+        <div className="max-w-625 mx-auto px-4 md:px-6 py-6 md:py-8">
+          <p className="text-red-500">Failed to load profile data.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const profileData = data?.profile_data;
 
   return (
     <div className="w-full min-h-screen bg-gray-50">
@@ -25,7 +52,7 @@ const AccountSettingsPage = () => {
         </div>
 
         {/* General section */}
-        <GeneralSettingsSection />
+        <GeneralSettingsSection profileData={profileData} />
 
         {/* Security Settings section */}
         <div className="mt-6">

@@ -17,19 +17,33 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
   email,
   avatar,
 }) => {
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
     <div className="">
       <div className="flex items-center gap-4">
         {/* Avatar */}
         <div className="relative">
           <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold text-xl md:text-2xl overflow-hidden">
-            <Image
-              src={avatar || ""}
-              alt={name}
-              width={80}
-              height={80}
-              className="w-full h-full object-cover"
-            />
+            {avatar ? (
+              <Image
+                src={avatar}
+                alt={name}
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+                unoptimized={true}
+              />
+            ) : (
+              <span>{getInitials(name)}</span>
+            )}
           </div>
         </div>
 

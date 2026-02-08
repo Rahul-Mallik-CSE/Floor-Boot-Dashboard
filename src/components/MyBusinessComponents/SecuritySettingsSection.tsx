@@ -5,11 +5,15 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../ui/button";
+import { useChangePasswordMutation } from "@/redux/freatures/myBusinessAPI";
+import { toast } from "react-toastify";
 
 export const SecuritySettingsSection: React.FC = () => {
+  const [changePassword, { isLoading }] = useChangePasswordMutation();
+
   const [formData, setFormData] = useState({
-    currentPassword: "",
-    newPassword: "",
+    old_password: "",
+    new_password: "",
   });
 
   const [showPasswords, setShowPasswords] = useState({
@@ -32,9 +36,29 @@ export const SecuritySettingsSection: React.FC = () => {
     }));
   };
 
-  const handleSaveChanges = () => {
-    // Handle save logic here
-    console.log("Saving password changes:", formData);
+  const handleSaveChanges = async () => {
+    if (!formData.old_password || !formData.new_password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const response = await changePassword({
+        old_password: formData.old_password,
+        new_password: formData.new_password,
+      }).unwrap();
+
+      if (response.success) {
+        toast.success(response.message || "Password changed successfully!");
+        setFormData({ old_password: "", new_password: "" });
+      } else {
+        toast.error(response.message || "Failed to change password");
+      }
+    } catch (error: any) {
+      toast.error(
+        error?.data?.message || "Failed to change password. Please try again.",
+      );
+    }
   };
 
   return (
@@ -49,7 +73,7 @@ export const SecuritySettingsSection: React.FC = () => {
         {/* Current Password */}
         <div>
           <label
-            htmlFor="currentPassword"
+            htmlFor="old_password"
             className="block text-sm font-medium text-gray-900 mb-2"
           >
             Current Password
@@ -57,9 +81,9 @@ export const SecuritySettingsSection: React.FC = () => {
           <div className="relative">
             <input
               type={showPasswords.current ? "text" : "password"}
-              id="currentPassword"
-              name="currentPassword"
-              value={formData.currentPassword}
+              id="old_password"
+              name="old_password"
+              value={formData.old_password}
               onChange={handleInputChange}
               className="w-full px-4 py-2.5 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm md:text-base"
               placeholder="Enter current password"
@@ -81,7 +105,7 @@ export const SecuritySettingsSection: React.FC = () => {
         {/* New Password */}
         <div>
           <label
-            htmlFor="newPassword"
+            htmlFor="new_password"
             className="block text-sm font-medium text-gray-900 mb-2"
           >
             New Password
@@ -89,9 +113,9 @@ export const SecuritySettingsSection: React.FC = () => {
           <div className="relative">
             <input
               type={showPasswords.new ? "text" : "password"}
-              id="newPassword"
-              name="newPassword"
-              value={formData.newPassword}
+              id="new_password"
+              name="new_password"
+              value={formData.new_password}
               onChange={handleInputChange}
               className="w-full px-4 py-2.5 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm md:text-base"
               placeholder="Enter new password"
@@ -115,9 +139,10 @@ export const SecuritySettingsSection: React.FC = () => {
       <div className="flex justify-end">
         <Button
           onClick={handleSaveChanges}
-          className="px-6 py-2.5 text-sm font-medium bg-gray-100 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+          disabled={isLoading}
+          className="px-6 py-2.5 text-sm font-medium bg-gray-100 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all disabled:opacity-50"
         >
-          Save changes
+          {isLoading ? "Changing..." : "Save changes"}
         </Button>
       </div>
     </div>

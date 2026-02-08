@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { useUpdateProfileMutation } from "@/redux/freatures/myBusinessAPI";
 import { getFullImageUrl } from "@/lib/utils";
+import { toast } from "react-toastify";
 
 interface ProfileData {
   full_name: string;
@@ -85,10 +86,10 @@ export const GeneralSettingsSection: React.FC<GeneralSettingsSectionProps> = ({
         await updateProfile(updateData).unwrap();
       }
 
-      alert("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Failed to update profile:", error);
-      alert("Failed to update profile. Please try again.");
+      toast.error("Failed to update profile. Please try again.");
     }
   };
 

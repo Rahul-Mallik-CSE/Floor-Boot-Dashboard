@@ -25,6 +25,17 @@ interface ProfileResponse {
   profile_data: ProfileData;
 }
 
+interface ChangePasswordRequest {
+  old_password: string;
+  new_password: string;
+}
+
+interface ChangePasswordResponse {
+  success: boolean;
+  message: string;
+  data: null;
+}
+
 const myBusinessAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
     getProfile: builder.query<ProfileResponse, void>({
@@ -42,9 +53,23 @@ const myBusinessAPI = baseAPI.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    changePassword: builder.mutation<
+      ChangePasswordResponse,
+      ChangePasswordRequest
+    >({
+      query: (data) => ({
+        url: "/auth/changepassword/",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetProfileQuery, useUpdateProfileMutation } = myBusinessAPI;
+export const {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
+} = myBusinessAPI;
 
 export default myBusinessAPI;

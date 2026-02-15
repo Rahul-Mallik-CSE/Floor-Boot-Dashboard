@@ -109,3 +109,56 @@ export interface FeedbackResponse {
   message: string;
   feedbacks: FeedbackItem[];
 }
+
+// Catalogue API Types
+export interface ProductImage {
+  id: number;
+  image: string;
+  title: string | null;
+}
+
+export interface ApiCatalogueProduct {
+  id: number;
+  product_title: string;
+  brand_manufacturer: string;
+  item_description: string;
+  main_category: number;
+  sub_category: string;
+  primary_image: string;
+  uploaded_images: ProductImage[];
+  regular_price: string;
+  sale_price: string;
+  tax_price: string;
+  product_id: string;
+  pack_coverage: string;
+  length: string;
+  width: string;
+  thickness: string;
+  weight: string;
+  installation_method: string;
+  coverage_per_pack: string;
+  pile_height: string | null;
+  materials: string;
+  format: string | null;
+  is_underlay_required: boolean | null;
+  is_calculate: boolean;
+  available_colors: string;
+  pattern_type: string | null;
+  stock_quantity: number;
+  return_policy: string;
+}
+
+export interface CatalogueProductsResponse {
+  success: boolean;
+  message: string;
+  products: ApiCatalogueProduct[];
+}
+
+export interface UpdateProductRequest {
+  product_title?: string;
+  product_id?: string;
+  sub_category?: string;
+  regular_price?: string;
+  sale_price?: string;
+  stock_quantity?: number;
+}

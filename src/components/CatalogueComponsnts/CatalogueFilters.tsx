@@ -2,17 +2,22 @@
 
 "use client";
 
-import React, { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import React from "react";
 
-export const CatalogueFilters: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState("all");
+interface CatalogueFiltersProps {
+  activeFilter: string;
+  onFilterChange: (filter: string) => void;
+}
 
+export const CatalogueFilters: React.FC<CatalogueFiltersProps> = ({
+  activeFilter,
+  onFilterChange,
+}) => {
   return (
     <div className="flex flex-wrap gap-2 md:gap-3">
       {/* All Filter */}
       <button
-        onClick={() => setActiveFilter("all")}
+        onClick={() => onFilterChange("all")}
         className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
           activeFilter === "all"
             ? "bg-lime-400 text-black hover:bg-lime-500"
@@ -22,22 +27,28 @@ export const CatalogueFilters: React.FC = () => {
         All
       </button>
 
-      {/* By category dropdown */}
-      <button className="px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-sm text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2">
-        By category
-        <ChevronDown className="w-4 h-4" />
+      {/* In Stock Filter */}
+      <button
+        onClick={() => onFilterChange("in-stock")}
+        className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+          activeFilter === "in-stock"
+            ? "bg-lime-400 text-black hover:bg-lime-500"
+            : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+        }`}
+      >
+        In Stock
       </button>
 
-      {/* By subcategory dropdown */}
-      <button className="px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-sm text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2">
-        By subcategory
-        <ChevronDown className="w-4 h-4" />
-      </button>
-
-      {/* In stock dropdown */}
-      <button className="px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-sm text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2">
-        In stock
-        <ChevronDown className="w-4 h-4" />
+      {/* Out of Stock Filter */}
+      <button
+        onClick={() => onFilterChange("out-of-stock")}
+        className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+          activeFilter === "out-of-stock"
+            ? "bg-lime-400 text-black hover:bg-lime-500"
+            : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+        }`}
+      >
+        Out of Stock
       </button>
     </div>
   );

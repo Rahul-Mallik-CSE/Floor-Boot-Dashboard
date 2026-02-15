@@ -20,7 +20,7 @@ const baseAPI = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "Auth", "Orders", "Wallet", "Feedback"],
+  tagTypes: ["User", "Auth", "Orders", "Wallet", "Feedback", "Catalogue"],
   endpoints: () => ({}),
 });
 

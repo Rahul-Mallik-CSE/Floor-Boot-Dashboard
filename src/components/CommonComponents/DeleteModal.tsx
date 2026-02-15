@@ -19,6 +19,7 @@ interface DeleteModalProps {
   title?: string;
   description?: string;
   itemName?: string;
+  isLoading?: boolean;
 }
 
 const DeleteModal = ({
@@ -28,10 +29,10 @@ const DeleteModal = ({
   title = "Delete Confirmation",
   description = "Are you sure you want to delete this item? This action cannot be undone.",
   itemName,
+  isLoading = false,
 }: DeleteModalProps) => {
   const handleConfirm = () => {
     onConfirm();
-    onOpenChange(false);
   };
 
   return (
@@ -61,14 +62,16 @@ const DeleteModal = ({
             onClick={() => onOpenChange(false)}
             variant="outline"
             className="flex-1 border-gray-300 hover:bg-gray-50"
+            disabled={isLoading}
           >
             Cancel
           </Button>
           <Button
             onClick={handleConfirm}
             className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+            disabled={isLoading}
           >
-            Delete
+            {isLoading ? "Deleting..." : "Delete"}
           </Button>
         </div>
       </DialogContent>

@@ -50,13 +50,13 @@ const NavBar = () => {
 
           {/* right side of navbar */}
           <div className="flex items-center gap-4">
-            <button
+            {/* <button
               onClick={handleBell}
               className="p-2 cursor-pointer hover:bg-gray-100 rounded-lg transition-colors"
               aria-label="Notifications"
             >
               <Bell className="h-6 w-6 text-gray-700" />
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

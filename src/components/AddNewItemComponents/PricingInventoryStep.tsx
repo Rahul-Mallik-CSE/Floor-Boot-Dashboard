@@ -10,8 +10,15 @@ interface PricingInventoryStepProps {
     salePrice: string;
     productId: string;
     packCoverage: string;
+    taxPrice: string;
   };
-  onChange: (data: any) => void;
+  onChange: (data: {
+    regularPrice: string;
+    salePrice: string;
+    productId: string;
+    packCoverage: string;
+    taxPrice: string;
+  }) => void;
 }
 
 export const PricingInventoryStep: React.FC<PricingInventoryStepProps> = ({
@@ -20,6 +27,13 @@ export const PricingInventoryStep: React.FC<PricingInventoryStepProps> = ({
 }) => {
   const handleChange = (field: string, value: string) => {
     onChange({ ...data, [field]: value });
+  };
+
+  const generateProductId = () => {
+    const prefix = "PROD";
+    const randomNum = Math.floor(100000 + Math.random() * 900000);
+    const productId = `${prefix}-${randomNum}`;
+    handleChange("productId", productId);
   };
 
   return (
@@ -46,7 +60,7 @@ export const PricingInventoryStep: React.FC<PricingInventoryStepProps> = ({
       {/* Sale Price */}
       <div>
         <label className="block text-sm font-medium text-gray-900 mb-2">
-          Sale Price (Optional)
+          Sale Price
         </label>
         <div className="relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
@@ -62,11 +76,34 @@ export const PricingInventoryStep: React.FC<PricingInventoryStepProps> = ({
         </div>
       </div>
 
+      {/* Sale Price */}
+      <div>
+        <label className="block text-sm font-medium text-gray-900 mb-2">
+          Tax Price
+        </label>
+        <div className="relative">
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+            £
+          </span>
+          <input
+            type="number"
+            value={data.taxPrice}
+            onChange={(e) => handleChange("taxPrice", e.target.value)}
+            placeholder="18.99"
+            className="w-full pl-8 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm"
+          />
+        </div>
+      </div>
+
       {/* Product ID */}
       <div>
         <label className="block text-sm font-medium text-gray-900 mb-2">
           Product ID*
-          <button className="ml-2 text-blue-600 text-xs hover:underline">
+          <button
+            type="button"
+            onClick={generateProductId}
+            className="ml-2 text-blue-600 text-xs hover:underline"
+          >
             Auto generate
           </button>
         </label>

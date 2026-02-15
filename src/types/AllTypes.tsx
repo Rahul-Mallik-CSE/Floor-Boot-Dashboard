@@ -104,12 +104,6 @@ export interface FeedbackItem {
   updated_at: string;
 }
 
-export interface FeedbackResponse {
-  success: boolean;
-  message: string;
-  feedbacks: FeedbackItem[];
-}
-
 // Catalogue API Types
 export interface ProductImage {
   id: number;
@@ -161,4 +155,54 @@ export interface UpdateProductRequest {
   regular_price?: string;
   sale_price?: string;
   stock_quantity?: number;
+}
+
+// Category Types
+export interface Category {
+  id: number;
+  title: string;
+  image: string;
+}
+
+export interface CategoriesResponse {
+  success: boolean;
+  message: string;
+  categories: Category[];
+}
+
+// Add New Item Types
+export interface CreateProductRequest {
+  product_title: string;
+  brand_manufacturer: string;
+  item_description: string;
+  main_category: number;
+  sub_category: string;
+  tags: string;
+  primary_image: File;
+  images: File[];
+  regular_price: string;
+  sale_price: string;
+  tax_price: string;
+  product_id: string;
+  pack_coverage: string;
+  length: string;
+  width: string;
+  thickness: string;
+  weight: string;
+  installation_method: string;
+  coverage_per_pack: string;
+  pile_height: string;
+  materials: string;
+  format: string;
+  is_underlay_required: boolean;
+  is_calculate: boolean;
+  available_colors: string;
+  pattern_type: string;
+  stock_quantity: number;
+}
+
+export interface CreateProductResponse {
+  success: boolean;
+  message: string;
+  product: ApiCatalogueProduct;
 }

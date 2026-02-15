@@ -3,17 +3,20 @@
 "use client";
 
 import React, { useState } from "react";
+import { useGetCategoriesQuery } from "@/redux/freatures/addNewItemApi";
+
+interface ItemDetailsData {
+  productTitle: string;
+  brand: string;
+  description: string;
+  mainCategory: string;
+  subCategory: string;
+  tags: string[];
+}
 
 interface ItemDetailsStepProps {
-  data: {
-    productTitle: string;
-    brand: string;
-    description: string;
-    mainCategory: string;
-    subCategory: string;
-    tags: string[];
-  };
-  onChange: (data: any) => void;
+  data: ItemDetailsData;
+  onChange: (data: ItemDetailsData) => void;
 }
 
 export const ItemDetailsStep: React.FC<ItemDetailsStepProps> = ({
@@ -21,8 +24,13 @@ export const ItemDetailsStep: React.FC<ItemDetailsStepProps> = ({
   onChange,
 }) => {
   const [tagInput, setTagInput] = useState("");
+  const { data: categoriesData, isLoading: categoriesLoading } =
+    useGetCategoriesQuery();
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = <K extends keyof ItemDetailsData>(
+    field: K,
+    value: ItemDetailsData[K],
+  ) => {
     onChange({ ...data, [field]: value });
   };
 
@@ -101,10 +109,15 @@ export const ItemDetailsStep: React.FC<ItemDetailsStepProps> = ({
           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm bg-white"
         >
           <option value="">Select...</option>
-          <option value="flooring">Flooring</option>
-          <option value="carpet">Carpet</option>
-          <option value="tile">Tile</option>
-          <option value="laminate">Laminate</option>
+          {categoriesLoading ? (
+            <option disabled>Loading categories...</option>
+          ) : (
+            categoriesData?.categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.title}
+              </option>
+            ))
+          )}
         </select>
       </div>
 

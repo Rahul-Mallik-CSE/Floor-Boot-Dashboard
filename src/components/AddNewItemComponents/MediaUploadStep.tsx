@@ -11,6 +11,7 @@ interface UploadedImage {
   name: string;
   size: string;
   url: string;
+  file: File;
 }
 
 interface MediaUploadStepProps {
@@ -18,7 +19,7 @@ interface MediaUploadStepProps {
     images: UploadedImage[];
     primaryImage: string;
   };
-  onChange: (data: any) => void;
+  onChange: (data: { images: UploadedImage[]; primaryImage: string }) => void;
 }
 
 export const MediaUploadStep: React.FC<MediaUploadStepProps> = ({
@@ -35,6 +36,7 @@ export const MediaUploadStep: React.FC<MediaUploadStepProps> = ({
         name: file.name,
         size: `${(file.size / 1024).toFixed(2)} KB`,
         url: URL.createObjectURL(file),
+        file: file,
       }));
 
       onChange({
@@ -53,6 +55,7 @@ export const MediaUploadStep: React.FC<MediaUploadStepProps> = ({
         name: file.name,
         size: `${(file.size / 1024).toFixed(2)} KB`,
         url: URL.createObjectURL(file),
+        file: file,
       }));
 
       onChange({
@@ -77,7 +80,8 @@ export const MediaUploadStep: React.FC<MediaUploadStepProps> = ({
           Media Upload
         </h3>
         <p className="text-sm text-gray-500 mb-4">
-          Add your product's photo to see how you can upload up to 8 photos max
+          Add your product&apos;s photo to see how you can upload up to 8 photos
+          max
         </p>
 
         {/* Upload Area */}
@@ -116,7 +120,7 @@ export const MediaUploadStep: React.FC<MediaUploadStepProps> = ({
               key={image.id}
               className="flex items-center gap-4 p-3 border border-gray-200 rounded-lg bg-white"
             >
-              <div className="w-12 h-12 bg-pink-100 rounded flex items-center justify-center flex-shrink-0 overflow-hidden">
+              <div className="w-12 h-12 bg-pink-100 rounded flex items-center justify-center shrink-0 overflow-hidden">
                 <Image
                   src={image.url}
                   alt={image.name}

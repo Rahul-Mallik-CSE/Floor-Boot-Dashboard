@@ -4,25 +4,28 @@
 
 import React, { useState } from "react";
 
+interface SpecificationsData {
+  length: string;
+  width: string;
+  thickness: string;
+  weight: string;
+  installationMethod: string;
+  coveragePerPack: string;
+  edgeProfile: string;
+  pileHeight: string;
+  materials: string;
+  format: string;
+  uniformityRequired: boolean;
+  isCalculate: boolean;
+  additionalDetails: boolean;
+  availableColors: string[];
+  patternType: string;
+  stockQuantity: string;
+}
+
 interface SpecificationsStepProps {
-  data: {
-    length: string;
-    width: string;
-    thickness: string;
-    weight: string;
-    installationMethod: string;
-    coveragePerPack: string;
-    edgeProfile: string;
-    pileHeight: string;
-    materials: string;
-    format: string;
-    uniformityRequired: boolean;
-    additionalDetails: boolean;
-    availableColors: string[];
-    patternType: string;
-    stockQuantity: string;
-  };
-  onChange: (data: any) => void;
+  data: SpecificationsData;
+  onChange: (data: SpecificationsData) => void;
 }
 
 export const SpecificationsStep: React.FC<SpecificationsStepProps> = ({
@@ -31,7 +34,10 @@ export const SpecificationsStep: React.FC<SpecificationsStepProps> = ({
 }) => {
   const [colorInput, setColorInput] = useState("");
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = <K extends keyof SpecificationsData>(
+    field: K,
+    value: SpecificationsData[K],
+  ) => {
     onChange({ ...data, [field]: value });
   };
 
@@ -246,6 +252,20 @@ export const SpecificationsStep: React.FC<SpecificationsStepProps> = ({
               Uniformity required*
             </label>
           </div>
+
+          {/* Is calculated */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="isCalculate"
+              checked={data.isCalculate}
+              onChange={(e) => handleChange("isCalculate", e.target.checked)}
+              className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+            />
+            <label htmlFor="isCalculate" className="text-sm text-gray-700">
+              Is Calculated?*
+            </label>
+          </div>
         </div>
       </div>
 
@@ -263,7 +283,7 @@ export const SpecificationsStep: React.FC<SpecificationsStepProps> = ({
             }
             className="sr-only peer"
           />
-          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-lime-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-lime-400"></div>
+          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-lime-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-lime-400"></div>
         </label>
       </div>
 

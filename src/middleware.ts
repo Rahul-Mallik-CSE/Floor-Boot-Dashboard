@@ -14,17 +14,16 @@ export async function middleware(request: NextRequest) {
   const isAuthPage =
     request.nextUrl.pathname.startsWith("/sign-in") ||
     request.nextUrl.pathname.startsWith("/sign-up") ||
-    request.nextUrl.pathname.startsWith("/forget-pass") ||
+    request.nextUrl.pathname.startsWith("/forgot-pass") ||
     request.nextUrl.pathname.startsWith("/reset-pass") ||
     request.nextUrl.pathname.startsWith("/verify-method") ||
-    request.nextUrl.pathname.startsWith("/verify-otp");
-
-  const isAccountSetupPage =
-    request.nextUrl.pathname.startsWith("/account-setup");
+    request.nextUrl.pathname.startsWith("/verify-otp") ||
+    request.nextUrl.pathname.startsWith("/set-new-pass");
 
   if (isAuthPage) {
     // If user is already logged in and tries to access auth pages, redirect to home
-    if (token) {
+    // But allow access to set-new-pass page even with token (password reset flow)
+    if (token && !request.nextUrl.pathname.startsWith("/set-new-pass")) {
       try {
         jwtDecode(token); // Verify token is valid
         return NextResponse.redirect(new URL("/", request.url));
@@ -43,16 +42,6 @@ export async function middleware(request: NextRequest) {
   try {
     const decoded: any = jwtDecode(token);
     const isVerified = await getVerifiedStatus();
-
-    // If user is not verified and not on account-setup page, redirect to account-setup
-    if (!isVerified && !isAccountSetupPage) {
-      return NextResponse.redirect(new URL("/account-setup", request.url));
-    }
-
-    // If user is verified and on account-setup page, redirect to dashboard
-    if (isVerified && isAccountSetupPage) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
 
     return NextResponse.next();
   } catch (error) {

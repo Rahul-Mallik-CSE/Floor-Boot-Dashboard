@@ -23,6 +23,19 @@ const NavBar = () => {
     router.push("/notifications");
   };
 
+  // Get page name based on pathname
+  const getPageName = () => {
+    if (pathname === "/") return "Orders";
+    if (pathname.startsWith("/catalogue")) return "Catalogue";
+    if (pathname.startsWith("/add-new-item")) return "Add New Item";
+    if (pathname.startsWith("/my-business")) return "My Business";
+    if (pathname.startsWith("/wallet")) return "Wallet";
+    if (pathname.startsWith("/feedback")) return "Feedback";
+    if (pathname.startsWith("/notifications")) return "Notifications";
+    if (pathname.startsWith("/orders")) return "Orders";
+    return "";
+  };
+
   return (
     <>
       <div className="sticky top-0 z-40 w-full h-16 bg-white flex items-center px-2 md:px-4 shadow-md border border-transparent">
@@ -30,7 +43,8 @@ const NavBar = () => {
           <div className="flex-1 flex items-center gap-2">
             <SidebarTrigger />
             <h1 className="text-xs md:text-sm text-gray-500">
-              Dashboard / <span></span>
+              Dashboard /{" "}
+              <span className="text-gray-900 font-medium">{getPageName()}</span>
             </h1>
           </div>
 

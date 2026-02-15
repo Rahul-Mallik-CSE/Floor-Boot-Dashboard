@@ -26,6 +26,7 @@ export interface OrderProduct {
   primary_image: string;
   uploaded_images: ProductImage[];
   regular_price: string;
+  tax_price: string;
   sale_price: string;
   product_id: string;
   is_calculate: boolean;

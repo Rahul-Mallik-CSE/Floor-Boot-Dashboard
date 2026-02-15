@@ -70,7 +70,7 @@ export default function OrderDetailsPage() {
         <OrderDetailsCards order={order} />
 
         {/* Action Buttons */}
-        <OrderActionButtons />
+        {/* <OrderActionButtons /> */}
 
         {/* Order Details Table */}
         <OrderDetailsTable order={order} />

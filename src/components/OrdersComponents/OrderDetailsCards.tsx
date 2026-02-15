@@ -12,6 +12,12 @@ interface OrderDetailsCardsProps {
 export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
   order,
 }) => {
+  const subtotal = parseFloat(order.order_total);
+  const deliveryFee = parseFloat(order.delivery_fee);
+  const productTax = parseFloat(order.product.tax_price);
+ 
+  const total = subtotal + deliveryFee + productTax ;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6">
       {/* Customer Name */}
@@ -69,12 +75,21 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
           <div className="flex justify-between">
             <span className="text-gray-600">Tax</span>
             <span className="text-gray-900">
-              ${parseFloat(order.tax_fee).toFixed(2)}
+              ${parseFloat(order.product.tax_price).toFixed(2)}
             </span>
           </div>
+
           <div className="border-t border-gray-300 pt-2 mt-2">
             <div className="flex justify-between font-semibold">
               <span className="text-gray-900">Total</span>
+              <span className="text-gray-900">
+                ${total.toFixed(2)}
+              </span>
+            </div>
+          </div>
+          <div className="border-t border-gray-300 pt-2 mt-2">
+            <div className="flex justify-between font-semibold">
+              <span className="text-gray-900">Paid Amount</span>
               <span className="text-gray-900">
                 ${parseFloat(order.paid_ammount).toFixed(2)}
               </span>

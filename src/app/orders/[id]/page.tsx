@@ -4,7 +4,7 @@
 
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ordersData } from "@/data/AllData";
+import { useGetOrderDetailsQuery } from "@/redux/freatures/ordersAPI";
 import { OrderHeader } from "@/components/OrdersComponents/OrderHeader";
 import { OrderDetailsCards } from "@/components/OrdersComponents/OrderDetailsCards";
 import { OrderActionButtons } from "@/components/OrdersComponents/OrderActionButtons";
@@ -14,11 +14,22 @@ import { ArrowLeft } from "lucide-react";
 export default function OrderDetailsPage() {
   const params = useParams();
   const router = useRouter();
-  const orderId = params.id as string;
+  const orderId = parseInt(params.id as string);
 
-  const order = ordersData.find((o) => o.id === orderId);
+  const { data, isLoading, error } = useGetOrderDetailsQuery(orderId);
 
-  if (!order) {
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
+          <p className="mt-4 text-gray-600">Loading order details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !data?.success || !data?.order_data) {
     return (
       <div className="w-full min-h-screen bg-gray-50">
         <div className="max-w-625 mx-auto px-4 md:px-6 py-6 md:py-8">
@@ -37,6 +48,8 @@ export default function OrderDetailsPage() {
       </div>
     );
   }
+
+  const order = data.order_data;
 
   return (
     <div className="w-full min-h-screen bg-gray-50">

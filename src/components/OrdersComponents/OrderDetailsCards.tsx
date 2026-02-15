@@ -3,10 +3,10 @@
 "use client";
 
 import React from "react";
-import { Order } from "@/types/AllTypes";
+import { OrderItem } from "@/types/orders";
 
 interface OrderDetailsCardsProps {
-  order: Order;
+  order: OrderItem;
 }
 
 export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
@@ -19,10 +19,13 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
         <h3 className="text-sm font-medium text-gray-900 mb-3">
           Customer Name
         </h3>
-        <p className="text-gray-700 mb-2">{order.customer}</p>
-        <button className="text-blue-600 text-sm hover:underline">
+        <p className="text-gray-700 mb-2">{order.user.full_name}</p>
+        <a
+          href={`mailto:${order.user.email}`}
+          className="text-blue-600 text-sm hover:underline"
+        >
           Send Email
-        </button>
+        </a>
       </div>
 
       {/* Shipping Address */}
@@ -31,11 +34,17 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
           Shipping Address
         </h3>
         <p className="text-gray-600 text-sm leading-relaxed">
-          Street 7, Harmonia Path
+          {order.address_line_i}
+          {order.address_line_ii && <>, {order.address_line_ii}</>}
           <br />
-          Spring TX, 77388, USA
+          {order.suburb && <>{order.suburb}, </>}
+          {order.city}
           <br />
-          8325906292
+          {order.state}, {order.postal_code}
+          <br />
+          {order.country_or_region}
+          <br />
+          {order.user.phone}
         </p>
       </div>
 
@@ -48,22 +57,26 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
           <div className="flex justify-between">
             <span className="text-gray-600">Subtotal</span>
             <span className="text-gray-900">
-              £{order.orderTotal.toFixed(2)}
+              ${parseFloat(order.order_total).toFixed(2)}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Delivery Fee</span>
+            <span className="text-gray-900">
+              ${parseFloat(order.delivery_fee).toFixed(2)}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Tax</span>
-            <span className="text-gray-900">£1.45</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Shipping</span>
-            <span className="text-gray-900">£0</span>
+            <span className="text-gray-900">
+              ${parseFloat(order.tax_fee).toFixed(2)}
+            </span>
           </div>
           <div className="border-t border-gray-300 pt-2 mt-2">
             <div className="flex justify-between font-semibold">
               <span className="text-gray-900">Total</span>
               <span className="text-gray-900">
-                £{(order.orderTotal + 1.45).toFixed(2)}
+                ${parseFloat(order.paid_ammount).toFixed(2)}
               </span>
             </div>
           </div>

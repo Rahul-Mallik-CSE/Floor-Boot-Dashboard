@@ -38,6 +38,7 @@ export interface OrderItem {
   product: OrderProduct;
   quantity: number;
   delivery_fee: string;
+  delivery_date: string | null;
   tax_fee: string;
   order_total: string;
   ship_method: string | null;
@@ -90,3 +91,36 @@ export interface OrdersQueryParams {
   query?: "shipped" | "unshipped" | "cancelled" | "delivered";
   search?: string;
 }
+
+// Single Order Details Response
+export interface OrderDetailsResponse {
+  success: boolean;
+  message: string;
+  order_data: OrderItem;
+}
+
+// Update Order Request
+export interface UpdateOrderRequest {
+  quantity: number;
+  ship_method: string;
+  status: OrderStatus;
+  carrier: string;
+  tracking_no: string;
+  delivery_fee: number;
+  is_shiped: boolean;
+}
+
+// Update Order Response
+export interface UpdateOrderResponse {
+  success: boolean;
+  message: string;
+}
+
+// Carrier Options
+export type CarrierOption =
+  | "Standard Ground"
+  | "Expedited"
+  | "Overnight"
+  | "Two-Day Delivery"
+  | "Free Shipping"
+  | "Express";

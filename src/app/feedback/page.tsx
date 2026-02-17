@@ -11,12 +11,13 @@ const FeedbackPage = () => {
   const { data, isLoading, error } = useGetFeedbacksQuery();
 
   // Transform ApiFeedback[] to FeedbackItem[]
-  const transformedFeedbacks: FeedbackItem[] = data?.feedbacks?.map(feedback => ({
-    id: feedback.id,
-    user: feedback.user,
-    customer_feedback: feedback.customer_feedback,
-    updated_at: feedback.updated_at,
-  })) || [];
+  const transformedFeedbacks: FeedbackItem[] =
+    data?.feedbacks?.map((feedback) => ({
+      id: feedback.id,
+      user: feedback.user,
+      customer_feedback: feedback.customer_feedback,
+      updated_at: feedback.updated_at,
+    })) || [];
 
   if (isLoading) {
     return (

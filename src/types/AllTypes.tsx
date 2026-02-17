@@ -100,7 +100,7 @@ export interface FeedbackUser {
 export interface FeedbackItem {
   id: number;
   user: FeedbackUser;
-  custormer_feedback: string;
+  customer_feedback: string;
   updated_at: string;
 }
 

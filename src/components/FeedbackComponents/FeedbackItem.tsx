@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-import { FeedbackItem } from "@/types/AllTypes";
+import type { FeedbackItem } from "@/types/AllTypes";
 import { getFullImageUrl } from "@/lib/utils";
 import Image from "next/image";
 
@@ -41,7 +41,7 @@ const FeedbackItem = ({ feedback }: FeedbackItemProps) => {
               {feedback.user.full_name}
             </h3>
             <p className="text-xs md:text-sm text-gray-700 leading-relaxed break-words">
-              {feedback.custormer_feedback}
+              {feedback.customer_feedback}
             </p>
           </div>
 

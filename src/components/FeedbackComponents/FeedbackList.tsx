@@ -1,8 +1,8 @@
 /** @format */
 
 import React from "react";
-import { FeedbackItem } from "@/types/AllTypes";
-import FeedbackItem from "./FeedbackItem";
+import type { FeedbackItem } from "@/types/AllTypes";
+import FeedbackItemComponent from "./FeedbackItem";
 
 interface FeedbackListProps {
   feedbacks: FeedbackItem[];
@@ -15,7 +15,7 @@ const FeedbackList = ({ feedbacks }: FeedbackListProps) => {
         {feedbacks.length > 0 ? (
           feedbacks.map((feedback) => (
             <div key={feedback.id} className="px-3 md:px-6">
-              <FeedbackItem feedback={feedback} />
+              <FeedbackItemComponent feedback={feedback} />
             </div>
           ))
         ) : (

@@ -5,9 +5,18 @@
 import FeedbackList from "@/components/FeedbackComponents/FeedbackList";
 import { useGetFeedbacksQuery } from "@/redux/freatures/feedbackAPI";
 import React from "react";
+import { FeedbackItem } from "@/types/AllTypes";
 
 const FeedbackPage = () => {
   const { data, isLoading, error } = useGetFeedbacksQuery();
+
+  // Transform ApiFeedback[] to FeedbackItem[]
+  const transformedFeedbacks: FeedbackItem[] = data?.feedbacks?.map(feedback => ({
+    id: feedback.id,
+    user: feedback.user,
+    customer_feedback: feedback.customer_feedback,
+    updated_at: feedback.updated_at,
+  })) || [];
 
   if (isLoading) {
     return (
@@ -57,7 +66,7 @@ const FeedbackPage = () => {
         <h1 className="text-black text-2xl md:text-3xl font-semibold mb-2 md:mb-4">
           Buyers Feedback
         </h1>
-        {data && <FeedbackList feedbacks={data.feedbacks} />}
+        {data && <FeedbackList feedbacks={transformedFeedbacks} />}
       </div>
     </div>
   );

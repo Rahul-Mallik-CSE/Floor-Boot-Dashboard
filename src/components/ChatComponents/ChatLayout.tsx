@@ -2,7 +2,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
 import { useSearchParams } from "next/navigation";
 import ChatList from "./ChatList";
 import ChatWindow from "./ChatWindow";
@@ -22,7 +28,13 @@ export default function ChatLayout() {
   const [lastMessageUpdates, setLastMessageUpdates] = useState<{
     [chatId: string]: { text: string; time: string; isRead: boolean };
   }>({});
-  const { data: chatListData, isLoading } = useGetChatListQuery();
+  const {
+    data: chatListData,
+    isLoading,
+    refetch: refetchChatList,
+  } = useGetChatListQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
   const searchParams = useSearchParams();
   const chatIdFromUrl = searchParams.get("chatId");
   const wsRef = useRef<WebSocket | null>(null);
@@ -92,23 +104,30 @@ export default function ChatLayout() {
           const isFromOtherUser =
             data.sender_id && allParticipantIds.includes(data.sender_id);
 
+          const chatIdStr = data.chat_id.toString();
+          const isActiveChat = chatIdStr === active;
+
           // Update the last message for this chat
           setLastMessageUpdates((prev) => ({
             ...prev,
-            [data.chat_id.toString()]: {
+            [chatIdStr]: {
               text: data.message,
               time: new Date().toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               }),
-              isRead: false,
+              // Mark as read if it's from current user OR if it's the active chat
+              isRead: !isFromOtherUser || isActiveChat,
             },
           }));
 
-          // Only increment unread count if message is from another user
-          if (isFromOtherUser) {
+          // Only increment unread count if message is from another user and not in active chat
+          if (isFromOtherUser && !isActiveChat) {
             window.dispatchEvent(new CustomEvent("unreadCountIncrement"));
           }
+
+          // Refetch chat list to update order and last message from backend
+          refetchChatList();
         }
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
@@ -130,10 +149,12 @@ export default function ChatLayout() {
         ws.close();
       }
     };
-  }, [allParticipantIds]);
+  }, [allParticipantIds, active, refetchChatList]);
 
+  // Initialize active chat from URL or first contact
   useEffect(() => {
     if (!initialized.current && contacts.length > 0) {
+      initialized.current = true;
       // If chatId is provided in URL, select that chat
       if (chatIdFromUrl) {
         const chatExists = contacts.find((c) => c.id === chatIdFromUrl);
@@ -145,9 +166,77 @@ export default function ChatLayout() {
       } else {
         setActive(contacts[0].id);
       }
-      initialized.current = true;
     }
   }, [contacts, chatIdFromUrl]);
+
+  // Handle message sent from ChatWindow
+  const handleMessageSent = useCallback(
+    (chatId: string, message: string, time: string) => {
+      // Update the last message for this chat immediately
+      setLastMessageUpdates((prev) => ({
+        ...prev,
+        [chatId]: {
+          text: message,
+          time: time,
+          isRead: true, // Own messages are always read
+        },
+      }));
+
+      // Refetch chat list to get updated order from backend
+      setTimeout(() => {
+        refetchChatList();
+      }, 500);
+    },
+    [refetchChatList],
+  );
+
+  // Handle message received from ChatWindow
+  const handleMessageReceived = useCallback(
+    (chatId: string, message: string, time: string) => {
+      // Update the last message for this chat
+      setLastMessageUpdates((prev) => ({
+        ...prev,
+        [chatId]: {
+          text: message,
+          time: time,
+          isRead: chatId === active, // Read if it's the active chat
+        },
+      }));
+
+      // Increment unread count if not active chat
+      if (chatId !== active) {
+        window.dispatchEvent(new CustomEvent("unreadCountIncrement"));
+      }
+
+      // Refetch chat list to get updated order from backend
+      setTimeout(() => {
+        refetchChatList();
+      }, 500);
+    },
+    [active, refetchChatList],
+  );
+
+  // Mark active chat as read when switching
+  const prevActiveRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (active && prevActiveRef.current !== active) {
+      prevActiveRef.current = active;
+      // Mark the active chat as read
+      setLastMessageUpdates((prev) => {
+        const chatUpdate = prev[active];
+        if (chatUpdate && !chatUpdate.isRead) {
+          return {
+            ...prev,
+            [active]: {
+              ...chatUpdate,
+              isRead: true,
+            },
+          };
+        }
+        return prev;
+      });
+    }
+  }, [active]);
 
   const activeContact = contacts.find((c) => c.id === active) || contacts[0];
 
@@ -181,6 +270,8 @@ export default function ChatLayout() {
         lastSeen="Last seen recently"
         chatId={active}
         participantIds={activeParticipantIds}
+        onMessageSent={handleMessageSent}
+        onMessageReceived={handleMessageReceived}
       />
     </div>
   );

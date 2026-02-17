@@ -2,7 +2,13 @@
 
 "use client";
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+} from "react";
 import Image from "next/image";
 import MessageBubble from "./MessageBubble";
 import ChatInput from "./ChatInput";
@@ -22,6 +28,8 @@ interface Props {
   lastSeen?: string;
   chatId: string | null;
   participantIds?: number[];
+  onMessageSent?: (chatId: string, message: string, time: string) => void;
+  onMessageReceived?: (chatId: string, message: string, time: string) => void;
 }
 
 export default function ChatWindow({
@@ -30,10 +38,13 @@ export default function ChatWindow({
   lastSeen,
   chatId,
   participantIds = [],
+  onMessageSent,
+  onMessageReceived,
 }: Props) {
   const [localMessages, setLocalMessages] = useState<Message[]>([]);
   const [currentChatId, setCurrentChatId] = useState<string | null>(chatId);
   const wsRef = useRef<WebSocket | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   // Clear local messages when chat changes
   if (currentChatId !== chatId) {
@@ -42,12 +53,21 @@ export default function ChatWindow({
   }
 
   // Fetch messages from API
-  const { data: messageData, isLoading } = useGetMessageListQuery(
-    chatId || "",
-    {
-      skip: !chatId,
-    },
-  );
+  const {
+    data: messageData,
+    isLoading,
+    refetch,
+  } = useGetMessageListQuery(chatId || "", {
+    skip: !chatId,
+    refetchOnMountOrArgChange: true,
+  });
+
+  // Refetch messages when chatId changes
+  useEffect(() => {
+    if (chatId) {
+      refetch();
+    }
+  }, [chatId, refetch]);
 
   // Setup WebSocket connection
   useEffect(() => {
@@ -81,18 +101,24 @@ export default function ChatWindow({
           }
 
           // Only add messages from other participants
+          const currentTime = new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
           const newMessage: Message = {
             id: `ws-${data.id || Date.now()}`,
             fromMe: false,
             text: data.message,
-            time: new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
+            time: currentTime,
             date: "Today",
           };
 
           setLocalMessages((prev) => [...prev, newMessage]);
+
+          // Notify parent to update chat list
+          if (onMessageReceived && chatId) {
+            onMessageReceived(chatId, data.message, currentTime);
+          }
         }
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
@@ -114,7 +140,7 @@ export default function ChatWindow({
         ws.close();
       }
     };
-  }, [chatId, participantIds]);
+  }, [chatId, participantIds, onMessageReceived]);
 
   // Transform API messages to local format
   const apiMessages: Message[] = useMemo(() => {
@@ -139,6 +165,33 @@ export default function ChatWindow({
     return [...apiMessages, ...localMessages];
   }, [apiMessages, localMessages]);
 
+  // Auto-scroll to bottom when messages change
+  useLayoutEffect(() => {
+    if (allMessages.length === 0) return;
+
+    // Always scroll to bottom for any message changes
+    const scrollToBottom = () => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "instant" });
+      }
+    };
+
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(scrollToBottom);
+  }, [allMessages]);
+
+  // Additional effect for when chat changes to ensure scroll
+  useEffect(() => {
+    if (chatId && allMessages.length > 0) {
+      // Small delay to ensure everything is rendered
+      setTimeout(() => {
+        if (messagesEndRef.current) {
+          messagesEndRef.current.scrollIntoView({ behavior: "instant" });
+        }
+      }, 100);
+    }
+  }, [chatId, allMessages.length]);
+
   const handleSend = (text: string) => {
     if (
       !chatId ||
@@ -160,17 +213,23 @@ export default function ChatWindow({
       console.log("Message sent via WebSocket:", messageData);
 
       // Optimistically add message to UI
+      const currentTime = new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       const msg: Message = {
         id: String(Date.now()),
         fromMe: true,
         text,
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+        time: currentTime,
         date: "Today",
       };
       setLocalMessages((s) => [...s, msg]);
+
+      // Notify parent to update chat list
+      if (onMessageSent) {
+        onMessageSent(chatId, text, currentTime);
+      }
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -227,7 +286,10 @@ export default function ChatWindow({
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-6 bg-white">
+      <div
+        className="flex-1 overflow-auto p-6 bg-white"
+        style={{ scrollBehavior: "auto" }}
+      >
         {isLoading ? (
           <div className="text-center text-gray-400 mt-8">
             Loading messages...
@@ -237,7 +299,10 @@ export default function ChatWindow({
             No messages yet. Start the conversation.
           </div>
         ) : (
-          <div className="space-y-1">{renderMessages()}</div>
+          <div className="space-y-1">
+            {renderMessages()}
+            <div ref={messagesEndRef} />
+          </div>
         )}
       </div>
 

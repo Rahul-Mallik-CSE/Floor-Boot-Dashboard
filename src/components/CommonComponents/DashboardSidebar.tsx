@@ -158,6 +158,16 @@ function DashboardSidebarContent() {
               }
               collapsed={isCollapsed}
             />
+
+            <NavItem
+              href="/support"
+              icon={FaUserAlt}
+              label={"Support"}
+              active={
+                pathname === "/support" || pathname.startsWith("/support" + "/")
+              }
+              collapsed={isCollapsed}
+            />
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter

@@ -146,9 +146,9 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Ship Method
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+              {/* <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Carrier
-              </th>
+              </th> */}
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Tracking No.
               </th>
@@ -187,9 +187,9 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
                   {order.ship_method || "-"}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
+                {/* <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
                   {order.carrier || "-"}
-                </td>
+                </td> */}
                 <td className="px-4 py-4 whitespace-nowrap text-sm">
                   {order.tracking_no ? (
                     <span className="text-blue-600 hover:underline cursor-pointer">

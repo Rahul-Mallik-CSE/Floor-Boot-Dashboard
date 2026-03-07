@@ -21,7 +21,7 @@ export interface ApiFeedback {
     full_name: string;
     image: string;
   };
-  customer_feedback: string;
+  custormer_feedback: string;
   updated_at: string;
 }
 
@@ -100,7 +100,7 @@ export interface FeedbackUser {
 export interface FeedbackItem {
   id: number;
   user: FeedbackUser;
-  customer_feedback: string;
+  custormer_feedback: string;
   updated_at: string;
 }
 

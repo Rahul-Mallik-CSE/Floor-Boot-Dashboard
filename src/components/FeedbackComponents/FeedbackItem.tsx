@@ -41,7 +41,7 @@ const FeedbackItem = ({ feedback }: FeedbackItemProps) => {
               {feedback.user.full_name}
             </h3>
             <p className="text-xs md:text-sm text-gray-700 leading-relaxed break-words">
-              {feedback.customer_feedback}
+              {feedback.custormer_feedback}
             </p>
           </div>
 

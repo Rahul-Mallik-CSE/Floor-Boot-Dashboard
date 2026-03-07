@@ -15,7 +15,7 @@ const FeedbackPage = () => {
     data?.feedbacks?.map((feedback) => ({
       id: feedback.id,
       user: feedback.user,
-      customer_feedback: feedback.customer_feedback,
+      custormer_feedback: feedback.custormer_feedback,
       updated_at: feedback.updated_at,
     })) || [];
 

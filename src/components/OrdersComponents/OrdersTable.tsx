@@ -179,7 +179,7 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                   {formatDate(order.created_at)}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                  ${parseFloat(order.order_total).toFixed(2)}
+                  £{parseFloat(order.order_total).toFixed(2)}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                   {order.user.full_name}

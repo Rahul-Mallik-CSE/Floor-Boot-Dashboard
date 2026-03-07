@@ -26,7 +26,7 @@ export const CatalogueTable: React.FC<CatalogueTableProps> = ({
     { key: "productId", label: "Product ID", width: "180px" },
     { key: "category", label: "Category", width: "120px" },
     { key: "subCategory", label: "Sub-category", width: "120px" },
-    { key: "price", label: "Price (USD)", width: "120px" },
+    { key: "price", label: "Price (£)", width: "120px" },
     { key: "inStockQty", label: "In Stock Qty", width: "120px" },
     { key: "action", label: "Action", width: "100px" },
   ];
@@ -93,11 +93,11 @@ export const CatalogueTable: React.FC<CatalogueTableProps> = ({
         return (
           <div className="flex items-center gap-2">
             <span className="text-gray-700 font-medium">
-              ${displayPrice.toFixed(2)}
+              £{displayPrice.toFixed(2)}
             </span>
             {parseFloat(item.sale_price) > 0 && (
               <span className="text-xs text-gray-400 line-through">
-                ${parseFloat(item.regular_price).toFixed(2)}
+                £{parseFloat(item.regular_price).toFixed(2)}
               </span>
             )}
           </div>

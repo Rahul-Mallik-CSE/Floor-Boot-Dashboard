@@ -172,7 +172,7 @@ export const OrderDetailsTable: React.FC<OrderDetailsTableProps> = ({
                 </div>
               </TableCell>
               <TableCell className="text-gray-900 font-medium text-sm">
-                ${parseFloat(order.order_total).toFixed(2)}
+                £{parseFloat(order.order_total).toFixed(2)}
               </TableCell>
               <TableCell className="text-gray-600 text-sm">
                 {order.ship_method || "N/A"}

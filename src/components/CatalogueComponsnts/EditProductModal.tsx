@@ -125,7 +125,7 @@ export const EditProductModal: React.FC<EditProductModalProps> = ({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Regular Price (USD)
+                Regular Price (£)
               </label>
               <Input
                 name="regular_price"
@@ -140,7 +140,7 @@ export const EditProductModal: React.FC<EditProductModalProps> = ({
 
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Sale Price (USD)
+                Sale Price (£)
               </label>
               <Input
                 name="sale_price"

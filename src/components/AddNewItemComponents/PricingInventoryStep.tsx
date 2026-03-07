@@ -26,7 +26,13 @@ export const PricingInventoryStep: React.FC<PricingInventoryStepProps> = ({
   onChange,
 }) => {
   const handleChange = (field: string, value: string) => {
-    onChange({ ...data, [field]: value });
+    if (field === "regularPrice") {
+      const regularPriceNum = parseFloat(value) || 0;
+      const taxPrice = (regularPriceNum * 0.2).toString();
+      onChange({ ...data, regularPrice: value, taxPrice });
+    } else {
+      onChange({ ...data, [field]: value });
+    }
   };
 
   const generateProductId = () => {
@@ -88,9 +94,9 @@ export const PricingInventoryStep: React.FC<PricingInventoryStepProps> = ({
           <input
             type="number"
             value={data.taxPrice}
-            onChange={(e) => handleChange("taxPrice", e.target.value)}
-            placeholder="18.99"
-            className="w-full pl-8 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm"
+            disabled
+            placeholder="6.00"
+            className="w-full pl-8 pr-4 py-2.5 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed outline-none text-sm"
           />
         </div>
       </div>

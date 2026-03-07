@@ -200,7 +200,7 @@ const AddNewItemPage = () => {
       router.push("/catalogue");
     } catch (err) {
       const error = err as { data?: { message?: string } };
-      toast.error(error?.data?.message || "Failed to create product");
+      toast.error("Please fill in all required fields");
     }
   };
 

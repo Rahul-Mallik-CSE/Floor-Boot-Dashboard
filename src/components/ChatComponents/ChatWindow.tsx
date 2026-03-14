@@ -77,7 +77,7 @@ export default function ChatWindow({
       return;
     }
 
-    const wsUrl = `ws://10.10.12.15:8089/ws/asc/update_chat_messages/?token=${token}`;
+    const wsUrl = `ws://69.62.70.69:8089/ws/asc/update_chat_messages/?token=${token}`;
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {

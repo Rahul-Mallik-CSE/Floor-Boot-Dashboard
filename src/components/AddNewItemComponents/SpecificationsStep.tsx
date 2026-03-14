@@ -3,6 +3,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useGetCategoriesQuery } from "@/redux/freatures/addNewItemApi";
 
 interface SpecificationsData {
   length: string;
@@ -26,13 +27,24 @@ interface SpecificationsData {
 interface SpecificationsStepProps {
   data: SpecificationsData;
   onChange: (data: SpecificationsData) => void;
+  mainCategory?: string;
 }
 
 export const SpecificationsStep: React.FC<SpecificationsStepProps> = ({
   data,
   onChange,
+  mainCategory,
 }) => {
   const [colorInput, setColorInput] = useState("");
+  const { data: categoriesData } = useGetCategoriesQuery();
+
+  const selectedMainCategoryName =
+    categoriesData?.categories?.find(
+      (category: { id: string | number; title: string }) =>
+        String(category.id) === String(mainCategory),
+    )?.title ||
+    mainCategory ||
+    "-";
 
   const handleChange = <K extends keyof SpecificationsData>(
     field: K,
@@ -174,7 +186,7 @@ export const SpecificationsStep: React.FC<SpecificationsStepProps> = ({
       <div className="border-t border-gray-200 pt-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-gray-900">
-            Categorized Details: Carpet
+            Categorized Details: {selectedMainCategoryName}
           </h3>
           <span className="text-xs text-gray-500">
             Additional details is required

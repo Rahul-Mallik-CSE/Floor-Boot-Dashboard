@@ -200,7 +200,7 @@ const AddNewItemPage = () => {
       router.push("/catalogue");
     } catch (err) {
       const error = err as { data?: { message?: string } };
-      toast.error("Please fill in all required fields");
+      toast.error(error?.data?.message || "Please fill in all required fields");
     }
   };
 
@@ -241,6 +241,7 @@ const AddNewItemPage = () => {
               {currentStep === 4 && (
                 <SpecificationsStep
                   data={formData.specifications}
+                  mainCategory={formData.itemDetails.mainCategory}
                   onChange={(data) => handleDataChange("specifications", data)}
                 />
               )}

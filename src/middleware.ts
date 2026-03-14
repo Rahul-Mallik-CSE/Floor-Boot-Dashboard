@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    const decoded: any = jwtDecode(token);
+    const decoded: unknown = jwtDecode(token);
     const isVerified = await getVerifiedStatus();
 
     return NextResponse.next();

@@ -22,19 +22,17 @@ const VerifyOtpForm: React.FC = () => {
   const router = useRouter();
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
   const [forgotPassword] = useForgotPasswordMutation();
+  const [email, setEmail] = useState<string>("");
 
-  // Get email from localStorage - stored as state initializer to avoid re-renders
-  const [email] = useState(() => {
-    const storedEmail = localStorage.getItem("resetEmail");
-    return storedEmail || "";
-  });
-
-  // Redirect if no email is found
+  // Get email from localStorage on mount - this prevents server-side rendering errors
   useEffect(() => {
-    if (!email) {
+    const storedEmail = localStorage.getItem("resetEmail");
+    if (storedEmail) {
+      setEmail(storedEmail);
+    } else {
       router.push("/forgot-pass");
     }
-  }, [email, router]);
+  }, [router]);
 
   // Timer countdown
   useEffect(() => {

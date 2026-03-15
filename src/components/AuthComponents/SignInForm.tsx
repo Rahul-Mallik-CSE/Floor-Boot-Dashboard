@@ -8,7 +8,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useLoginMutation } from "@/redux/freatures/authAPI";
-import { saveTokens } from "@/services/authService";
+import { setAuthCookies } from "@/lib/authCookies";
 
 export const SignInForm: React.FC = () => {
   const router = useRouter();
@@ -42,7 +42,7 @@ export const SignInForm: React.FC = () => {
         localStorage.setItem("user", JSON.stringify(response.user));
 
         // Save token to cookies for middleware
-        await saveTokens(response.access, true);
+        setAuthCookies(response.access, true);
 
         console.log("Login successful, redirecting...");
 

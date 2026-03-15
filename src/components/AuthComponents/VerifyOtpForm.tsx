@@ -11,7 +11,7 @@ import {
   useVerifyOtpMutation,
   useForgotPasswordMutation,
 } from "@/redux/freatures/authAPI";
-import { saveTokens } from "@/services/authService";
+import { setAuthCookies } from "@/lib/authCookies";
 
 const VerifyOtpForm: React.FC = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
@@ -110,7 +110,7 @@ const VerifyOtpForm: React.FC = () => {
         localStorage.setItem("accessToken", response.access);
 
         // Save token to cookies
-        await saveTokens(response.access, false);
+        setAuthCookies(response.access, false);
 
         // Redirect to reset password page
         router.push("/set-new-pass");

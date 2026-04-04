@@ -39,6 +39,18 @@ const catalogueAPI = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Catalogue"],
     }),
+
+    uploadProductsCSV: builder.mutation<
+      { success: boolean; message: string; status: string },
+      FormData
+    >({
+      query: (formData) => ({
+        url: `/admins/products/upload/csv/`,
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["Catalogue"],
+    }),
   }),
 });
 
@@ -46,6 +58,7 @@ export const {
   useGetCatalogueProductsQuery,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useUploadProductsCSVMutation,
 } = catalogueAPI;
 
 export default catalogueAPI;

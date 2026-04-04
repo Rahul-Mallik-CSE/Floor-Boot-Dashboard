@@ -7,10 +7,14 @@ import { CatalogueSearchBar } from "@/components/CatalogueComponsnts/CatalogueSe
 import { CatalogueFilters } from "@/components/CatalogueComponsnts/CatalogueFilters";
 import { CatalogueTable } from "@/components/CatalogueComponsnts/CatalogueTable";
 import { EditProductModal } from "@/components/CatalogueComponsnts/EditProductModal";
+import UploadCSVModal from "@/components/CatalogueComponsnts/UploadCSVModal";
 import DeleteModal from "@/components/CommonComponents/DeleteModal";
+import { Button } from "@/components/ui/button";
+import { Upload } from "lucide-react";
 import {
   useGetCatalogueProductsQuery,
   useDeleteProductMutation,
+  useUploadProductsCSVMutation,
 } from "@/redux/freatures/catalogueAPI";
 import { ApiCatalogueProduct } from "@/types/AllTypes";
 import { toast } from "react-toastify";
@@ -22,11 +26,14 @@ const CataloguePage = () => {
     useState<ApiCatalogueProduct | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] =
     useState<ApiCatalogueProduct | null>(null);
 
   const { data, isLoading, error } = useGetCatalogueProductsQuery();
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
+  const [uploadProductsCSV, { isLoading: isUploading }] =
+    useUploadProductsCSVMutation();
 
   const filteredProducts = useMemo(() => {
     const products = data?.products || [];
@@ -77,6 +84,19 @@ const CataloguePage = () => {
     }
   };
 
+  const handleCSVUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      await uploadProductsCSV(formData).unwrap();
+      toast.success("Products uploaded successfully!");
+    } catch (err) {
+      const error = err as { data?: { message?: string } };
+      toast.error(error?.data?.message || "Failed to upload CSV file");
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="w-full min-h-screen bg-gray-50 flex items-center justify-center">
@@ -98,9 +118,19 @@ const CataloguePage = () => {
   return (
     <div className="w-full min-h-screen bg-gray-50">
       <div className="max-w-625 mx-auto px-4 md:px-6 py-6 md:py-8">
-        <h1 className="text-black text-2xl md:text-3xl font-semibold mb-6 md:mb-8">
-          Catalogue
-        </h1>
+        <div className="flex items-center justify-between mb-6 md:mb-8">
+          <h1 className="text-black text-2xl md:text-3xl font-semibold">
+            Catalogue
+          </h1>
+          <Button
+            onClick={() => setIsUploadModalOpen(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white gap-2"
+            disabled={isUploading}
+          >
+            <Upload className="w-4 h-4" />
+            {isUploading ? "Uploading..." : "Upload CSV"}
+          </Button>
+        </div>
 
         {/* Search Bar */}
         <div className="mb-4">
@@ -148,6 +178,14 @@ const CataloguePage = () => {
         title="Delete Product"
         itemName={productToDelete?.product_title}
         isLoading={isDeleting}
+      />
+
+      {/* Upload CSV Modal */}
+      <UploadCSVModal
+        open={isUploadModalOpen}
+        onOpenChange={setIsUploadModalOpen}
+        onConfirm={handleCSVUpload}
+        isLoading={isUploading}
       />
     </div>
   );

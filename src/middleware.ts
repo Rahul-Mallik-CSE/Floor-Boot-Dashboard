@@ -3,12 +3,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
-import { getCurrentUser, getVerifiedStatus } from "./services/authService";
 
 const SIGN_IN_URL = "/sign-in";
 
 export async function middleware(request: NextRequest) {
-  const token = await getCurrentUser();
+  const token = request.cookies.get("token")?.value;
 
   // Allow access to auth pages without token
   const isAuthPage =
@@ -40,8 +39,7 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    const decoded: unknown = jwtDecode(token);
-    const isVerified = await getVerifiedStatus();
+    jwtDecode(token);
 
     return NextResponse.next();
   } catch (error) {

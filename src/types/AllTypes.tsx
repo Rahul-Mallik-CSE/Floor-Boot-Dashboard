@@ -111,12 +111,19 @@ export interface ProductImage {
   title: string | null;
 }
 
+export interface MainCategoryDetails {
+  id: number;
+  title: string;
+  image: string;
+}
+
 export interface ApiCatalogueProduct {
   id: number;
   product_title: string;
   brand_manufacturer: string;
   item_description: string;
   main_category: number;
+  main_category_details: MainCategoryDetails;
   sub_category: string;
   primary_image: string;
   uploaded_images: ProductImage[];

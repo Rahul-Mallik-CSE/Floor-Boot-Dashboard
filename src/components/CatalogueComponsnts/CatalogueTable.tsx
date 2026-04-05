@@ -75,7 +75,7 @@ export const CatalogueTable: React.FC<CatalogueTableProps> = ({
       case "category":
         return (
           <span className="text-gray-600 text-sm">
-            Category {item.main_category}
+            {item.main_category_details?.title || "N/A"}
           </span>
         );
 

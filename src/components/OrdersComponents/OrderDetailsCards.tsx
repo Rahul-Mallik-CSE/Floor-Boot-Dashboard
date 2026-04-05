@@ -75,7 +75,10 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
           <div className="flex justify-between">
             <span className="text-gray-600">Tax</span>
             <span className="text-gray-900">
-              £{parseFloat(order.product.tax_price).toFixed(2)}
+              £
+              {(parseFloat(order.product.tax_price) * order.quantity).toFixed(
+                2,
+              )}
             </span>
           </div>
 

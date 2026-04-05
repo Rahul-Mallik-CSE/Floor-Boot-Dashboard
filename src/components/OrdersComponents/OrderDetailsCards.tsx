@@ -14,7 +14,7 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
 }) => {
   const subtotal = parseFloat(order.order_total);
   const deliveryFee = parseFloat(order.delivery_fee);
-  const productTax = parseFloat(order.product.tax_price);
+  const productTax = parseFloat(order.product.tax_price) * order.quantity;
 
   const total = subtotal + deliveryFee + productTax;
 
@@ -75,10 +75,7 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
           <div className="flex justify-between">
             <span className="text-gray-600">Tax</span>
             <span className="text-gray-900">
-              £
-              {(parseFloat(order.product.tax_price) * order.quantity).toFixed(
-                2,
-              )}
+              £{parseFloat(order.product.tax_price).toFixed(2)}
             </span>
           </div>
 

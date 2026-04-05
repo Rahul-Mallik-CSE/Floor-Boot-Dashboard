@@ -15,6 +15,7 @@ import { X } from "lucide-react";
 import { ApiCatalogueProduct } from "@/types/AllTypes";
 import { useUpdateProductMutation } from "@/redux/freatures/catalogueAPI";
 import { toast } from "react-toastify";
+import { getFullImageUrl } from "@/lib/utils";
 
 interface EditProductModalProps {
   isOpen: boolean;
@@ -207,7 +208,7 @@ export const EditProductModal: React.FC<EditProductModalProps> = ({
             ) : product?.primary_image ? (
               <div className="relative w-full h-40 rounded-lg border border-gray-300 overflow-hidden bg-gray-100">
                 <img
-                  src={product.primary_image}
+                  src={getFullImageUrl(product.primary_image)}
                   alt="Product"
                   className="w-full h-full object-cover"
                 />

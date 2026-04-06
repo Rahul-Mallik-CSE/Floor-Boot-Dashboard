@@ -57,6 +57,7 @@ export const OrderDetailsTable: React.FC<OrderDetailsTableProps> = ({
   );
 
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
+  const isDelivered = status === "delivered";
 
   const getStatusStyles = (status: OrderStatus) => {
     switch (status) {
@@ -184,8 +185,11 @@ export const OrderDetailsTable: React.FC<OrderDetailsTableProps> = ({
                 <Select
                   value={status}
                   onValueChange={(value) => setStatus(value as OrderStatus)}
+                  disabled={isDelivered}
                 >
-                  <SelectTrigger className="w-32">
+                  <SelectTrigger
+                    className={`w-32 ${isDelivered ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
                     <SelectValue>
                       <span
                         className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium border ${getStatusStyles(
@@ -211,12 +215,19 @@ export const OrderDetailsTable: React.FC<OrderDetailsTableProps> = ({
                   min="1"
                   value={quantity}
                   onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                  className="w-20 px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  disabled={isDelivered}
+                  className={`w-20 px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isDelivered ? "opacity-50 cursor-not-allowed bg-gray-100" : ""}`}
                 />
               </TableCell>
               <TableCell>
-                <Select value={carrier} onValueChange={setCarrier}>
-                  <SelectTrigger className="w-40">
+                <Select
+                  value={carrier}
+                  onValueChange={setCarrier}
+                  disabled={isDelivered}
+                >
+                  <SelectTrigger
+                    className={`w-40 ${isDelivered ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -233,7 +244,8 @@ export const OrderDetailsTable: React.FC<OrderDetailsTableProps> = ({
                   type="text"
                   value={trackingNo}
                   onChange={(e) => setTrackingNo(e.target.value)}
-                  className="w-32 px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  disabled={isDelivered}
+                  className={`w-32 px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isDelivered ? "opacity-50 cursor-not-allowed bg-gray-100" : ""}`}
                   placeholder="Enter tracking #"
                 />
               </TableCell>
@@ -246,17 +258,22 @@ export const OrderDetailsTable: React.FC<OrderDetailsTableProps> = ({
                   onChange={(e) =>
                     setDeliveryFee(parseFloat(e.target.value) || 0)
                   }
-                  className="w-24 px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  disabled={isDelivered}
+                  className={`w-24 px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isDelivered ? "opacity-50 cursor-not-allowed bg-gray-100" : ""}`}
                   placeholder="0.00"
                 />
               </TableCell>
               <TableCell>
                 <button
                   onClick={handleConfirmShipment}
-                  disabled={isLoading}
+                  disabled={isLoading || isDelivered}
                   className="px-4 py-1.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                 >
-                  {isLoading ? "Confirming..." : "Confirm shipment"}
+                  {isLoading
+                    ? "Confirming..."
+                    : isDelivered
+                      ? "Delivered"
+                      : "Confirm shipment"}
                 </button>
               </TableCell>
             </TableRow>

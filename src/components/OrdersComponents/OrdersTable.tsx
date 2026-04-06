@@ -167,66 +167,73 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {data.map((order) => (
-              <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
-                  #{order.id}
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
-                  {order.product.product_id}
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {formatDate(order.created_at)}
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                  £{parseFloat(order.order_total).toFixed(2)}
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
-                  {order.user.full_name}
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {order.ship_method || "-"}
-                </td>
-                {/* <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
+            {data.map((order) => {
+              const userFullName = order.user?.full_name || "Unknown Customer";
+              const productId = order.product?.product_id || "N/A";
+              const productTitle =
+                order.product?.product_title || "Unknown Product";
+              return (
+                <tr
+                  key={order.id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                    #{order.id}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {productId}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {formatDate(order.created_at)}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                    £{parseFloat(order.order_total).toFixed(2)}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {userFullName}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {order.ship_method || "-"}
+                  </td>
+                  {/* <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
                   {order.carrier || "-"}
                 </td> */}
-                <td className="px-4 py-4 whitespace-nowrap text-sm">
-                  {order.tracking_no ? (
-                    <span className="text-blue-600 hover:underline cursor-pointer">
-                      {order.tracking_no}
+                  <td className="px-4 py-4 whitespace-nowrap text-sm">
+                    {order.tracking_no ? (
+                      <span className="text-blue-600 hover:underline cursor-pointer">
+                        {order.tracking_no}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-4 text-sm text-gray-700">
+                    <div className="max-w-50 truncate">{productTitle}</div>
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                    {order.quantity}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <span
+                      className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${getStatusStyles(
+                        order.status,
+                      )}`}
+                    >
+                      {formatStatusLabel(order.status)}
                     </span>
-                  ) : (
-                    <span className="text-gray-400">-</span>
-                  )}
-                </td>
-                <td className="px-4 py-4 text-sm text-gray-700">
-                  <div className="max-w-50 truncate">
-                    {order.product.product_title}
-                  </div>
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
-                  {order.quantity}
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap">
-                  <span
-                    className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${getStatusStyles(
-                      order.status,
-                    )}`}
-                  >
-                    {formatStatusLabel(order.status)}
-                  </span>
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap">
-                  <button
-                    onClick={() => router.push(`/orders/${order.id}`)}
-                    className="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
-                  >
-                    <Eye className="w-4 h-4" />
-                    Details
-                  </button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => router.push(`/orders/${order.id}`)}
+                      className="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
+                    >
+                      <Eye className="w-4 h-4" />
+                      Details
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

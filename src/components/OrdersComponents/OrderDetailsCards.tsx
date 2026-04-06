@@ -14,7 +14,11 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
 }) => {
   const subtotal = parseFloat(order.order_total);
   const deliveryFee = parseFloat(order.delivery_fee);
-  const productTax = parseFloat(order.product.tax_price) * order.quantity;
+  const productTax =
+    parseFloat(order.product?.tax_price || "0") * order.quantity;
+  const userFullName = order.user?.full_name || "Unknown Customer";
+  const userEmail = order.user?.email || "N/A";
+  const userPhone = order.user?.phone || "N/A";
 
   const total = subtotal + deliveryFee + productTax;
 
@@ -25,13 +29,15 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
         <h3 className="text-sm font-medium text-gray-900 mb-3">
           Customer Name
         </h3>
-        <p className="text-gray-700 mb-2">{order.user.full_name}</p>
-        <a
-          href={`mailto:${order.user.email}`}
-          className="text-blue-600 text-sm hover:underline"
-        >
-          Send Email
-        </a>
+        <p className="text-gray-700 mb-2">{userFullName}</p>
+        {userEmail !== "N/A" && (
+          <a
+            href={`mailto:${userEmail}`}
+            className="text-blue-600 text-sm hover:underline"
+          >
+            Send Email
+          </a>
+        )}
       </div>
 
       {/* Shipping Address */}
@@ -50,7 +56,7 @@ export const OrderDetailsCards: React.FC<OrderDetailsCardsProps> = ({
           <br />
           {order.country_or_region}
           <br />
-          {order.user.phone}
+          {userPhone}
         </p>
       </div>
 

@@ -44,6 +44,8 @@ const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
 export const OrderDetailsTable: React.FC<OrderDetailsTableProps> = ({
   order,
 }) => {
+  const productId = order.product?.product_id || "N/A";
+  const productTitle = order.product?.product_title || "Unknown Product";
   const [quantity, setQuantity] = useState(order.quantity);
   const [status, setStatus] = useState<OrderStatus>(order.status);
   const [carrier, setCarrier] = useState<string>(
@@ -163,13 +165,11 @@ export const OrderDetailsTable: React.FC<OrderDetailsTableProps> = ({
             <TableRow className="border-b border-gray-100">
               <TableCell className="py-4 pl-6">
                 <span className="text-blue-600 text-sm hover:underline cursor-pointer">
-                  {order.product.product_id}
+                  {productId}
                 </span>
               </TableCell>
               <TableCell className="text-gray-700 text-sm">
-                <div className="max-w-40 truncate">
-                  {order.product.product_title}
-                </div>
+                <div className="max-w-40 truncate">{productTitle}</div>
               </TableCell>
               <TableCell className="text-gray-900 font-medium text-sm">
                 £{parseFloat(order.order_total).toFixed(2)}

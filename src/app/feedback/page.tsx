@@ -14,7 +14,10 @@ const FeedbackPage = () => {
   const transformedFeedbacks: FeedbackItem[] =
     data?.feedbacks?.map((feedback) => ({
       id: feedback.id,
-      user: feedback.user,
+      user: {
+        full_name: feedback.user?.full_name || "Unknown User",
+        image: feedback.user?.image || "",
+      },
       custormer_feedback: feedback.custormer_feedback,
       updated_at: feedback.updated_at,
     })) || [];

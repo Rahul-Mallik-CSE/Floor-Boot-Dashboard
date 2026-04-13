@@ -132,9 +132,6 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                 Purchase Order
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                Product ID
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Order Date
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
@@ -153,12 +150,6 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                 Tracking No.
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                Item
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                Qty
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                 Status
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
@@ -169,9 +160,6 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
           <tbody className="bg-white divide-y divide-gray-200">
             {data.map((order) => {
               const userFullName = order.user?.full_name || "Unknown Customer";
-              const productId = order.product?.product_id || "N/A";
-              const productTitle =
-                order.product?.product_title || "Unknown Product";
               return (
                 <tr
                   key={order.id}
@@ -179,9 +167,6 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                 >
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
                     #{order.id}
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {productId}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-600">
                     {formatDate(order.created_at)}
@@ -206,12 +191,6 @@ export const OrdersTable: React.FC<OrdersTableProps> = ({
                     ) : (
                       <span className="text-gray-400">-</span>
                     )}
-                  </td>
-                  <td className="px-4 py-4 text-sm text-gray-700">
-                    <div className="max-w-50 truncate">{productTitle}</div>
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
-                    {order.quantity}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap">
                     <span

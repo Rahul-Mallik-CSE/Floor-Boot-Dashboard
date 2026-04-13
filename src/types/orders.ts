@@ -7,8 +7,8 @@ export type OrderStatus = "placed" | "in_transit" | "delivered" | "cancelled";
 export interface OrderUser {
   full_name: string;
   email: string;
-  phone: string;
-  image: string;
+  phone: string | null;
+  image: string | null;
 }
 
 // Product Image
@@ -23,7 +23,7 @@ export interface OrderProduct {
   id: number;
   product_title: string;
   item_description: string;
-  primary_image: string;
+  primary_image: string | null;
   uploaded_images: ProductImage[];
   regular_price: string;
   tax_price: string;
@@ -32,15 +32,23 @@ export interface OrderProduct {
   is_calculate: boolean;
 }
 
-// Order Item
+// Order Line Item
+export interface OrderLineItem {
+  id: number;
+  quantity: number;
+  price: number;
+  tax: number;
+  total: number;
+  product: OrderProduct | null;
+}
+
+// Order Summary / Details
 export interface OrderItem {
   id: number;
-  user: OrderUser;
-  product: OrderProduct;
-  quantity: number;
+  user: OrderUser | null;
+  items: OrderLineItem[];
   delivery_fee: string;
   delivery_date: string | null;
-  tax_fee: string;
   order_total: string;
   ship_method: string | null;
   status: OrderStatus;
@@ -102,7 +110,6 @@ export interface OrderDetailsResponse {
 
 // Update Order Request
 export interface UpdateOrderRequest {
-  quantity: number;
   ship_method: string;
   status: OrderStatus;
   carrier: string;
